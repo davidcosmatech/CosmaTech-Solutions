@@ -2,88 +2,119 @@ document.addEventListener('DOMContentLoaded', () => {
   const isRo = document.documentElement.lang === 'ro' || window.location.pathname.includes('/ro/');
 
   // ==========================================
-  // 1. Password Hashing Helper (SHA-256)
+  // 1. Supabase Initialization and SDK Loader
   // ==========================================
-  async function hashPassword(password) {
-    const msgBuffer = new TextEncoder().encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  const SUPABASE_URL = "https://kzfwfdfibmhyqhxavjlr.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_QzKXt3FbsSfuM1s5n_AwZg_J3sdzgGa";
+  let supabaseClient = null;
+
+  function loadSupabase() {
+    return new Promise((resolve) => {
+      if (window.supabase) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      script.onload = () => resolve();
+      script.onerror = () => {
+        console.error('Failed to load Supabase SDK');
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
   }
 
+  // Initialize Supabase client
+  loadSupabase().then(() => {
+    if (window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      
+      // Wire reactive navbar updates to Supabase Auth state changes
+      if (!document.body.hasAttribute('data-auth-page')) {
+        supabaseClient.auth.onAuthStateChange(() => {
+          if (typeof updateNavbar === 'function') {
+            updateNavbar();
+          }
+        });
+      }
+    }
+  });
+
   // ==========================================
-  // 2. Database layer (localStorage wrapper)
+  // 2. Database layer (Supabase client wrapper)
   // ==========================================
   const LocalDatabase = {
-    getUsers() {
-      const users = localStorage.getItem('cosmatech_users');
-      return users ? JSON.parse(users) : {};
-    },
-    saveUsers(users) {
-      localStorage.setItem('cosmatech_users', JSON.stringify(users));
+    getCurrentUser() {
+      try {
+        const tokenStr = localStorage.getItem('sb-kzfwfdfibmhyqhxavjlr-auth-token');
+        if (!tokenStr) return null;
+        const tokenData = JSON.parse(tokenStr);
+        if (!tokenData || !tokenData.user) return null;
+        
+        const user = tokenData.user;
+        const meta = user.user_metadata || {};
+        const email = user.email;
+        const quotesKey = 'cosmatech_quotes_' + email.toLowerCase();
+        const quotes = localStorage.getItem(quotesKey) ? JSON.parse(localStorage.getItem(quotesKey)) : [];
+        return {
+          name: meta.full_name || 'Client',
+          email: email,
+          phone: meta.phone || '',
+          quotes: quotes
+        };
+      } catch (e) {
+        return null;
+      }
     },
     async registerUser(name, email, password, phone) {
-      const users = this.getUsers();
-      const lowerEmail = email.toLowerCase().trim();
-      if (users[lowerEmail]) {
-        throw new Error(isRo ? 'Acest email este deja înregistrat.' : 'This email is already registered.');
-      }
-      const passwordHash = await hashPassword(password);
-      users[lowerEmail] = {
-        name: name.trim(),
-        email: lowerEmail,
-        phone: phone.trim(),
-        passwordHash,
-        quotes: []
-      };
-      this.saveUsers(users);
-      this.setSession(lowerEmail);
-      return users[lowerEmail];
+      if (!supabaseClient) throw new Error('Supabase client not initialized');
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+            phone: phone
+          }
+        }
+      });
+      if (error) throw error;
+      return data.user;
     },
     async loginUser(email, password) {
-      const users = this.getUsers();
-      const lowerEmail = email.toLowerCase().trim();
-      const user = users[lowerEmail];
-      if (!user) {
-        throw new Error(isRo ? 'Email sau parolă incorectă.' : 'Invalid email or password.');
+      if (!supabaseClient) throw new Error('Supabase client not initialized');
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+      if (error) throw error;
+      return data.user;
+    },
+    async clearSession() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
       }
-      const hash = await hashPassword(password);
-      if (user.passwordHash !== hash) {
-        throw new Error(isRo ? 'Email sau parolă incorectă.' : 'Invalid email or password.');
-      }
-      this.setSession(lowerEmail);
-      return user;
     },
-    getCurrentUser() {
-      const session = localStorage.getItem('cosmatech_session');
-      if (!session) return null;
-      const users = this.getUsers();
-      return users[session] || null;
-    },
-    setSession(email) {
-      localStorage.setItem('cosmatech_session', email);
-    },
-    clearSession() {
-      localStorage.removeItem('cosmatech_session');
-    },
-    updateUserProfile(name, phone) {
-      const currentUser = this.getCurrentUser();
-      if (!currentUser) throw new Error('Not logged in');
-      const users = this.getUsers();
-      const email = currentUser.email;
-      users[email].name = name.trim();
-      users[email].phone = phone.trim();
-      this.saveUsers(users);
-      return users[email];
+    async updateUserProfile(name, phone) {
+      if (!supabaseClient) throw new Error('Supabase client not initialized');
+      const { data, error } = await supabaseClient.auth.updateUser({
+        data: {
+          full_name: name,
+          phone: phone
+        }
+      });
+      if (error) throw error;
+      return data.user;
     },
     saveQuote(quote) {
       const currentUser = this.getCurrentUser();
       if (!currentUser) return;
-      const users = this.getUsers();
       const email = currentUser.email;
-      if (!users[email].quotes) users[email].quotes = [];
-      users[email].quotes.push(quote);
-      this.saveUsers(users);
+      const key = 'cosmatech_quotes_' + email.toLowerCase();
+      const quotes = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+      quotes.push(quote);
+      localStorage.setItem(key, JSON.stringify(quotes));
     }
   };
 

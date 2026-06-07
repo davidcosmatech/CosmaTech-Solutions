@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us | CosmaTech Solutions</title>
-  <meta name="description" content="Get in touch with CosmaTech Solutions. Contact us via email or phone for support or service requests.">
-  
+  <meta name="description"
+    content="Get in touch with CosmaTech Solutions. Contact us via email or phone for support or service requests.">
+
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <body>
 
   <div class="bg-glow bg-glow-1"></div>
@@ -21,7 +25,7 @@
       <a href="index.html" class="logo">
         <img src="images/cosmatech%20logo.png" alt="CosmaTech Solutions" class="logo-img">
       </a>
-      
+
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="services.html">Services</a></li>
@@ -30,12 +34,13 @@
         <li><a href="contact.html" class="active">Contact</a></li>
         <li class="navbar-btn-mobile"><a href="#" class="btn btn-primary btn-quote-trigger">Request Quote</a></li>
       </ul>
-      
+
       <div class="navbar-actions">
         <div class="navbar-btn">
           <a href="#" class="btn btn-primary btn-quote-trigger">Request Quote</a>
         </div>
-        <a href="ro/contact.html" class="lang-toggle-link"><img src="https://flagcdn.com/16x12/ro.png" alt="Română"> RO</a>
+        <a href="ro/contact.html" class="lang-toggle-link"><img src="https://flagcdn.com/16x12/ro.png" alt="Română">
+          RO</a>
       </div>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
@@ -57,10 +62,10 @@
   <section class="detail-section">
     <div class="container">
       <div class="contact-layout">
-        
+
         <!-- Left Column: Info cards -->
         <div class="glass-card contact-info-card animate-on-scroll">
-          
+
           <div class="contact-detail-item">
             <div class="contact-icon">
               <i class="fas fa-phone"></i>
@@ -71,7 +76,7 @@
               <p style="font-size: 0.85rem; color: var(--text-muted);">Available during business hours</p>
             </div>
           </div>
-          
+
           <div class="contact-detail-item">
             <div class="contact-icon">
               <i class="fas fa-envelope"></i>
@@ -82,7 +87,7 @@
               <p style="font-size: 0.85rem; color: var(--text-muted);">We respond within 24 hours</p>
             </div>
           </div>
-          
+
           <div class="contact-detail-item">
             <div class="contact-icon">
               <i class="fas fa-clock"></i>
@@ -94,7 +99,7 @@
               <p>Sunday: Closed</p>
             </div>
           </div>
-          
+
           <div class="contact-detail-item">
             <div class="contact-icon">
               <i class="fas fa-location-dot"></i>
@@ -111,18 +116,18 @@
         <!-- Right Column: Interactive Form -->
         <div class="glass-card contact-form-card animate-on-scroll">
           <h3>Send a quick message</h3>
-          
+
           <form id="contactForm">
             <div class="form-group">
               <label for="name">Your Name *</label>
               <input type="text" id="name" class="form-control" placeholder="John Doe" required>
             </div>
-            
+
             <div class="form-group">
               <label for="email">Email Address *</label>
               <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
             </div>
-            
+
             <div class="form-group">
               <label for="serviceSelect">Interested Service</label>
               <select id="serviceSelect" class="form-control">
@@ -132,13 +137,15 @@
                 <option value="other">General IT Inquiry</option>
               </select>
             </div>
-            
+
             <div class="form-group">
               <label for="message">Message Details *</label>
-              <textarea id="message" class="form-control" rows="5" placeholder="Tell us about your project specs or computer issues..." required></textarea>
+              <textarea id="message" class="form-control" rows="5"
+                placeholder="Tell us about your project specs or computer issues..." required></textarea>
             </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message <i class="fas fa-paper-plane"></i></button>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message <i
+                class="fas fa-paper-plane"></i></button>
           </form>
         </div>
       </div>
@@ -151,7 +158,8 @@
       <div class="footer-grid">
         <div class="footer-info">
           <h3>CosmaTech <span>Solutions</span></h3>
-          <p class="footer-desc">Professional IT company offering reliable web development, PC/laptop hardware repairs, and secure cloud hosting solutions.</p>
+          <p class="footer-desc">Professional IT company offering reliable web development, PC/laptop hardware repairs,
+            and secure cloud hosting solutions.</p>
           <div class="footer-contact-item">
             <i class="fas fa-envelope"></i>
             <a href="mailto:contact@cosmatech.co.uk">contact@cosmatech.co.uk</a>
@@ -161,7 +169,7 @@
             <a href="tel:07538533646">07538533646</a>
           </div>
         </div>
-        
+
         <div class="footer-links">
           <h4>Quick Links</h4>
           <ul>
@@ -172,18 +180,22 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
-        
+
         <div class="footer-social">
           <h4>Follow Us</h4>
           <div class="social-icons">
-            <a href="https://facebook.com/" target="_blank" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://instagram.com/" target="_blank" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/" target="_blank" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://linkedin.com/" target="_blank" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://facebook.com/" target="_blank" class="social-icon" aria-label="Facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/" target="_blank" class="social-icon" aria-label="Instagram"><i
+                class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/" target="_blank" class="social-icon" aria-label="TikTok"><i
+                class="fab fa-tiktok"></i></a>
+            <a href="https://linkedin.com/" target="_blank" class="social-icon" aria-label="LinkedIn"><i
+                class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
       </div>
-      
+
       <div class="footer-bottom">
         <p>&copy; 2026 CosmaTech Solutions. All rights reserved.</p>
         <p>Designed for speed, stability, and performance.</p>
@@ -224,13 +236,18 @@
         <div class="quote-steps">
           <div class="step-indicator">
             <div class="step-progress-bar"></div>
-            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+            <div class="step-dot active">1</div>
+            <div class="step-dot">2</div>
+            <div class="step-dot">3</div>
+            <div class="step-dot">4</div>
+            <div class="step-dot">5</div>
           </div>
           <div class="quote-step-content active">
             <h4 style="margin-bottom: 16px;">Step 1: Website Size</h4>
             <input type="hidden" id="webScaleInput" value="small">
             <div class="service-selector-grid grid-2col" style="gap: 12px;">
-              <div class="selector-card selected" data-value="small" data-input-target="webScaleInput" data-default="true">
+              <div class="selector-card selected" data-value="small" data-input-target="webScaleInput"
+                data-default="true">
                 <i class="fas fa-file-code"></i><span>Presentation (1-4 pages)<br><small>from £249</small></span>
               </div>
               <div class="selector-card" data-value="medium" data-input-target="webScaleInput">
@@ -247,19 +264,26 @@
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 2: Desired Features</h4>
             <div class="features-grid-choice">
-              <label class="feature-checkbox-label"><input type="checkbox" id="featBlog"><span>Blog Section (+£80)</span></label>
-              <label class="feature-checkbox-label"><input type="checkbox" id="featAuth"><span>User Authentication (+£150)</span></label>
-              <label class="feature-checkbox-label"><input type="checkbox" id="featPay"><span>Online Card Payments (+£120)</span></label>
-              <label class="feature-checkbox-label"><input type="checkbox" id="featChat"><span>WhatsApp Integration (+£40)</span></label>
-              <label class="feature-checkbox-label"><input type="checkbox" id="featLang"><span>Multilingual Support (+£100)</span></label>
-              <label class="feature-checkbox-label"><input type="checkbox" id="featSeo"><span>Advanced SEO Package (+£70)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featBlog"><span>Blog Section
+                  (+£80)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featAuth"><span>User Authentication
+                  (+£150)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featPay"><span>Online Card Payments
+                  (+£120)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featChat"><span>WhatsApp Integration
+                  (+£40)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featLang"><span>Multilingual Support
+                  (+£100)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featSeo"><span>Advanced SEO Package
+                  (+£70)</span></label>
             </div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 3: Logo & Visual Identity</h4>
             <input type="hidden" id="webDesignInput" value="exists">
             <div class="service-selector-grid grid-1col" style="gap: 10px;">
-              <div class="selector-card selected" data-value="exists" data-input-target="webDesignInput" data-default="true">
+              <div class="selector-card selected" data-value="exists" data-input-target="webDesignInput"
+                data-default="true">
                 <span>I already have a logo (No cost)</span>
               </div>
               <div class="selector-card" data-value="needed" data-input-target="webDesignInput">
@@ -272,24 +296,31 @@
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 4: Contact Details</h4>
-            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name"
+                placeholder="John Doe"></div>
             <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
-              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email"
+                  placeholder="john@example.com"></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone"
+                  placeholder="07123 456789"></div>
             </div>
-            <div class="form-group"><label>Additional Details</label><textarea class="form-control quote-notes" placeholder="Briefly describe what you want from the site..."></textarea></div>
+            <div class="form-group"><label>Additional Details</label><textarea class="form-control quote-notes"
+                placeholder="Briefly describe what you want from the site..."></textarea></div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 12px;">Step 5: Cost Estimate</h4>
             <div class="quote-summary-box">
-              <div class="summary-row"><span>Service:</span><span id="webSummaryService" style="font-weight:600;"></span></div>
+              <div class="summary-row"><span>Service:</span><span id="webSummaryService"
+                  style="font-weight:600;"></span></div>
               <div id="webSummaryItems"></div>
-              <div class="summary-row total"><span>Estimated Total:</span><span id="webSummaryTotal" class="summary-val highlight"></span></div>
+              <div class="summary-row total"><span>Estimated Total:</span><span id="webSummaryTotal"
+                  class="summary-val highlight"></span></div>
             </div>
           </div>
         </div>
         <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
-          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Back</button>
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i>
+            Back</button>
           <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -305,13 +336,18 @@
         <div class="quote-steps">
           <div class="step-indicator">
             <div class="step-progress-bar"></div>
-            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+            <div class="step-dot active">1</div>
+            <div class="step-dot">2</div>
+            <div class="step-dot">3</div>
+            <div class="step-dot">4</div>
+            <div class="step-dot">5</div>
           </div>
           <div class="quote-step-content active">
             <h4 style="margin-bottom: 16px;">Step 1: Device Type</h4>
             <input type="hidden" id="repairDeviceInput" value="laptop">
             <div class="service-selector-grid grid-2col" style="gap: 12px;">
-              <div class="selector-card selected" data-value="laptop" data-input-target="repairDeviceInput" data-default="true">
+              <div class="selector-card selected" data-value="laptop" data-input-target="repairDeviceInput"
+                data-default="true">
                 <i class="fas fa-laptop"></i><span>Laptop / Notebook</span>
               </div>
               <div class="selector-card" data-value="desktop" data-input-target="repairDeviceInput">
@@ -329,7 +365,8 @@
             <h4 style="margin-bottom: 16px;">Step 2: Requested Service</h4>
             <input type="hidden" id="repairTypeInput" value="diagnostic">
             <div class="service-selector-grid grid-1col" style="gap: 10px;">
-              <div class="selector-card selected" data-value="diagnostic" data-input-target="repairTypeInput" data-default="true">
+              <div class="selector-card selected" data-value="diagnostic" data-input-target="repairTypeInput"
+                data-default="true">
                 <span>Hardware Diagnostics & Troubleshooting - £25</span>
               </div>
               <div class="selector-card" data-value="clean" data-input-target="repairTypeInput">
@@ -348,28 +385,36 @@
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 3: Device Brand & Model</h4>
-            <div class="form-group"><label>Brand and Model (e.g. Asus TUF Gaming, MacBook Pro 2020) *</label><input type="text" class="form-control quote-brand" placeholder="Device model" required></div>
+            <div class="form-group"><label>Brand and Model (e.g. Asus TUF Gaming, MacBook Pro 2020) *</label><input
+                type="text" class="form-control quote-brand" placeholder="Device model" required></div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 4: Contact Details</h4>
-            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name"
+                placeholder="John Doe"></div>
             <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
-              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email"
+                  placeholder="john@example.com"></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone"
+                  placeholder="07123 456789"></div>
             </div>
-            <div class="form-group"><label>Problem Description</label><textarea class="form-control quote-notes" placeholder="Briefly describe the issue..."></textarea></div>
+            <div class="form-group"><label>Problem Description</label><textarea class="form-control quote-notes"
+                placeholder="Briefly describe the issue..."></textarea></div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 12px;">Step 5: Repair Estimate</h4>
             <div class="quote-summary-box">
-              <div class="summary-row"><span>Service:</span><span id="repairSummaryService" style="font-weight:600;"></span></div>
+              <div class="summary-row"><span>Service:</span><span id="repairSummaryService"
+                  style="font-weight:600;"></span></div>
               <div id="repairSummaryItems"></div>
-              <div class="summary-row total"><span>Estimated Total:</span><span id="repairSummaryTotal" class="summary-val highlight"></span></div>
+              <div class="summary-row total"><span>Estimated Total:</span><span id="repairSummaryTotal"
+                  class="summary-val highlight"></span></div>
             </div>
           </div>
         </div>
         <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
-          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Back</button>
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i>
+            Back</button>
           <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -385,13 +430,18 @@
         <div class="quote-steps">
           <div class="step-indicator">
             <div class="step-progress-bar"></div>
-            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+            <div class="step-dot active">1</div>
+            <div class="step-dot">2</div>
+            <div class="step-dot">3</div>
+            <div class="step-dot">4</div>
+            <div class="step-dot">5</div>
           </div>
           <div class="quote-step-content active">
             <h4 style="margin-bottom: 16px;">Step 1: Choose Subscription</h4>
             <input type="hidden" id="hostPlanInput" value="starter">
             <div class="service-selector-grid grid-1col" style="gap: 10px;">
-              <div class="selector-card selected" data-value="starter" data-input-target="hostPlanInput" data-default="true">
+              <div class="selector-card selected" data-value="starter" data-input-target="hostPlanInput"
+                data-default="true">
                 <span>Starter Cloud Hosting - £5.99/month</span>
               </div>
               <div class="selector-card" data-value="business" data-input-target="hostPlanInput">
@@ -406,7 +456,8 @@
             <h4 style="margin-bottom: 16px;">Step 2: Domain Registration</h4>
             <input type="hidden" id="hostDomainInput" value="none">
             <div class="service-selector-grid grid-1col" style="gap: 10px;">
-              <div class="selector-card selected" data-value="none" data-input-target="hostDomainInput" data-default="true">
+              <div class="selector-card selected" data-value="none" data-input-target="hostDomainInput"
+                data-default="true">
                 <span>I already own a domain (No cost)</span>
               </div>
               <div class="selector-card" data-value="ukcom" data-input-target="hostDomainInput">
@@ -421,7 +472,8 @@
             <h4 style="margin-bottom: 16px;">Step 3: Billing Cycle</h4>
             <input type="hidden" id="hostCycleInput" value="monthly">
             <div class="service-selector-grid grid-2col" style="gap: 12px;">
-              <div class="selector-card selected" data-value="monthly" data-input-target="hostCycleInput" data-default="true">
+              <div class="selector-card selected" data-value="monthly" data-input-target="hostCycleInput"
+                data-default="true">
                 <span>Monthly Billing</span>
               </div>
               <div class="selector-card" data-value="yearly" data-input-target="hostCycleInput">
@@ -431,24 +483,31 @@
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 4: Contact Details</h4>
-            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name"
+                placeholder="John Doe"></div>
             <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
-              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email"
+                  placeholder="john@example.com"></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone"
+                  placeholder="07123 456789"></div>
             </div>
-            <div class="form-group"><label>Desired Domain / Details</label><input type="text" class="form-control quote-notes" placeholder="Enter the desired domain name..."></div>
+            <div class="form-group"><label>Desired Domain / Details</label><input type="text"
+                class="form-control quote-notes" placeholder="Enter the desired domain name..."></div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 12px;">Step 5: Order Summary</h4>
             <div class="quote-summary-box">
-              <div class="summary-row"><span>Service:</span><span id="hostSummaryService" style="font-weight:600;"></span></div>
+              <div class="summary-row"><span>Service:</span><span id="hostSummaryService"
+                  style="font-weight:600;"></span></div>
               <div id="hostSummaryItems"></div>
-              <div class="summary-row total"><span>Estimated Total:</span><span id="hostSummaryTotal" class="summary-val highlight"></span></div>
+              <div class="summary-row total"><span>Estimated Total:</span><span id="hostSummaryTotal"
+                  class="summary-val highlight"></span></div>
             </div>
           </div>
         </div>
         <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
-          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Back</button>
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i>
+            Back</button>
           <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -464,13 +523,18 @@
         <div class="quote-steps">
           <div class="step-indicator">
             <div class="step-progress-bar"></div>
-            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+            <div class="step-dot active">1</div>
+            <div class="step-dot">2</div>
+            <div class="step-dot">3</div>
+            <div class="step-dot">4</div>
+            <div class="step-dot">5</div>
           </div>
           <div class="quote-step-content active">
             <h4 style="margin-bottom: 16px;">Step 1: Intended Use</h4>
             <input type="hidden" id="pcUsageInput" value="gaming">
             <div class="service-selector-grid" style="gap: 10px;">
-              <div class="selector-card selected" data-value="gaming" data-input-target="pcUsageInput" data-default="true">
+              <div class="selector-card selected" data-value="gaming" data-input-target="pcUsageInput"
+                data-default="true">
                 <i class="fas fa-gamepad"></i><span>Gaming / Media</span>
               </div>
               <div class="selector-card" data-value="work" data-input-target="pcUsageInput">
@@ -491,7 +555,8 @@
               <div class="selector-card" data-value="starter" data-input-target="pcBudgetInput">
                 <span>Starter Gaming PC<br><small>from £499</small></span>
               </div>
-              <div class="selector-card selected" data-value="performance" data-input-target="pcBudgetInput" data-default="true">
+              <div class="selector-card selected" data-value="performance" data-input-target="pcBudgetInput"
+                data-default="true">
                 <span>Performance Gaming PC<br><small>from £899</small></span>
               </div>
               <div class="selector-card" data-value="ultimate" data-input-target="pcBudgetInput">
@@ -503,7 +568,8 @@
             <h4 style="margin-bottom: 16px;">Step 3: Cooling Optimizations</h4>
             <input type="hidden" id="pcOptionsInput" value="air">
             <div class="service-selector-grid grid-1col" style="gap: 10px;">
-              <div class="selector-card selected" data-value="air" data-input-target="pcOptionsInput" data-default="true">
+              <div class="selector-card selected" data-value="air" data-input-target="pcOptionsInput"
+                data-default="true">
                 <span>Standard Air Cooling (Included)</span>
               </div>
               <div class="selector-card" data-value="water" data-input-target="pcOptionsInput">
@@ -513,24 +579,31 @@
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 16px;">Step 4: Contact Details</h4>
-            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-group"><label>Full Name *</label><input type="text" class="form-control quote-name"
+                placeholder="John Doe"></div>
             <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
-              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email"
+                  placeholder="john@example.com"></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" class="form-control quote-phone"
+                  placeholder="07123 456789"></div>
             </div>
-            <div class="form-group"><label>Visual / Case Requirements</label><textarea class="form-control quote-notes" placeholder="e.g. Full white case, synchronized RGB lights..."></textarea></div>
+            <div class="form-group"><label>Visual / Case Requirements</label><textarea class="form-control quote-notes"
+                placeholder="e.g. Full white case, synchronized RGB lights..."></textarea></div>
           </div>
           <div class="quote-step-content">
             <h4 style="margin-bottom: 12px;">Step 5: Configuration Estimate</h4>
             <div class="quote-summary-box">
-              <div class="summary-row"><span>Service:</span><span id="pcSummaryService" style="font-weight:600;"></span></div>
+              <div class="summary-row"><span>Service:</span><span id="pcSummaryService" style="font-weight:600;"></span>
+              </div>
               <div id="pcSummaryItems"></div>
-              <div class="summary-row total"><span>Estimated Total:</span><span id="pcSummaryTotal" class="summary-val highlight"></span></div>
+              <div class="summary-row total"><span>Estimated Total:</span><span id="pcSummaryTotal"
+                  class="summary-val highlight"></span></div>
             </div>
           </div>
         </div>
         <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
-          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Back</button>
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i>
+            Back</button>
           <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -539,11 +612,14 @@
 
   <script src="js/main.js"></script>
 </body>
-</html>       </div>
-      </div>
-    </div>
-  </div>
 
-  <script src="js/main.js"></script>
+</html>
+</div>
+</div>
+</div>
+</div>
+
+<script src="js/main.js"></script>
 </body>
+
 </html>

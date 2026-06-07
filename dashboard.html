@@ -7,7 +7,8 @@
   <title>Client Dashboard | CosmaTech Solutions</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Manage your account, project quotes, and IT service inquiries in the CosmaTech Solutions Client Portal.">
+  <meta name="description"
+    content="Manage your account, project quotes, and IT service inquiries in the CosmaTech Solutions Client Portal.">
   <meta name="keywords" content="dashboard, client portal, CosmaTech Solutions, IT repairs, web design">
 
   <link rel="icon" type="image/png" href="images/favicon.png">
@@ -161,6 +162,7 @@
     }
   </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <body data-auth-page="true">
 
@@ -180,7 +182,8 @@
         <span style="font-size: 0.9rem; color: var(--text-secondary); display: block;" class="welcome-label">
           Welcome, <strong id="navUserName" style="color: #FFFFFF;">User</strong>
         </span>
-        <button id="logoutBtn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
+        <button id="logoutBtn" class="btn btn-secondary"
+          style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -189,7 +192,7 @@
 
   <!-- Main Dashboard Container -->
   <div class="dashboard-container">
-    
+
     <!-- Title Section -->
     <div style="margin-bottom: 24px;">
       <span class="badge" style="color: var(--accent-light); font-weight: 700; margin-bottom: 8px;">
@@ -211,33 +214,39 @@
 
     <!-- Dashboard Content Grid -->
     <div class="dashboard-grid">
-      
+
       <!-- Left Column: Profile Card -->
       <div class="glass-card profile-card">
         <div class="profile-avatar">
           <i class="fas fa-user"></i>
         </div>
-        
+
         <h3 id="profileCardName" style="text-align: center; font-size: 1.25rem;">John Doe</h3>
-        <p id="profileCardEmail" style="text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">john@example.com</p>
+        <p id="profileCardEmail"
+          style="text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+          john@example.com</p>
 
         <!-- Edit Profile Details Form -->
         <form id="profileUpdateForm" class="profile-details-form">
-          <h4 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #FFFFFF;">
+          <h4
+            style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #FFFFFF;">
             Update Profile
           </h4>
-          
+
           <div class="form-group">
             <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" class="form-control" placeholder="John Doe" required style="padding: 10px 12px; font-size: 0.9rem;">
-          </div>
-          
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" class="form-control" placeholder="07123 456789" required style="padding: 10px 12px; font-size: 0.9rem;">
+            <input type="text" id="fullName" class="form-control" placeholder="John Doe" required
+              style="padding: 10px 12px; font-size: 0.9rem;">
           </div>
 
-          <button type="submit" class="btn btn-secondary" id="saveProfileBtn" style="width: 100%; padding: 10px; font-size: 0.85rem; justify-content: center; margin-top: 8px;">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" placeholder="07123 456789" required
+              style="padding: 10px 12px; font-size: 0.9rem;">
+          </div>
+
+          <button type="submit" class="btn btn-secondary" id="saveProfileBtn"
+            style="width: 100%; padding: 10px; font-size: 0.85rem; justify-content: center; margin-top: 8px;">
             Save Changes <i class="fas fa-save" style="margin-left: 6px;"></i>
           </button>
         </form>
@@ -245,9 +254,12 @@
 
       <!-- Right Column: Quotes History -->
       <div class="glass-card">
-        <h3 style="font-size: 1.4rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 16px;">
+        <h3
+          style="font-size: 1.4rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 16px;">
           <span>Quote Request History</span>
-          <span style="font-size: 0.8rem; background: var(--accent-glow); color: var(--accent-light); padding: 4px 10px; border-radius: 12px; font-weight: 500;" id="quoteCountBadge">0 Total</span>
+          <span
+            style="font-size: 0.8rem; background: var(--accent-glow); color: var(--accent-light); padding: 4px 10px; border-radius: 12px; font-weight: 500;"
+            id="quoteCountBadge">0 Total</span>
         </h3>
 
         <!-- Quote History List Wrapper -->
@@ -265,189 +277,9 @@
     </div>
   </div>
 
-  <!-- Shared Auth Engine script -->
-  <script src="js/auth.js"></script>
-
-  <!-- Dashboard Integration Script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Secure page check: Redirect immediately if session doesn't exist
-      if (!window.LocalDatabase) {
-        alert('Database layer not loaded. Redirecting to home.');
-        window.location.href = 'index.html';
-        return;
-      }
-
-      const currentUser = window.LocalDatabase.getCurrentUser();
-      if (!currentUser) {
-        window.location.href = 'signin.html';
-        return;
-      }
-
-      // UI Element Bindings
-      const navUserName = document.getElementById('navUserName');
-      const profileCardName = document.getElementById('profileCardName');
-      const profileCardEmail = document.getElementById('profileCardEmail');
-      const fullNameInput = document.getElementById('fullName');
-      const phoneInput = document.getElementById('phone');
-      const profileUpdateForm = document.getElementById('profileUpdateForm');
-      const saveProfileBtn = document.getElementById('saveProfileBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const quotesContainer = document.getElementById('quotesContainer');
-      const quoteCountBadge = document.getElementById('quoteCountBadge');
-      const successAlert = document.getElementById('successAlert');
-      const successMessage = document.getElementById('successMessage');
-      const errorAlert = document.getElementById('errorAlert');
-      const errorMessage = document.getElementById('errorMessage');
-
-      // Populate user data
-      function populateUserData() {
-        const user = window.LocalDatabase.getCurrentUser();
-        if (!user) return;
-        
-        const firstName = user.name.split(' ')[0];
-        navUserName.innerText = firstName;
-        profileCardName.innerText = user.name;
-        profileCardEmail.innerText = user.email;
-        fullNameInput.value = user.name;
-        phoneInput.value = user.phone;
-
-        renderQuotes(user.quotes || []);
-      }
-
-      // Render quote list helper
-      function renderQuotes(quotes) {
-        quoteCountBadge.innerText = `${quotes.length} Total`;
-
-        if (quotes.length === 0) {
-          quotesContainer.innerHTML = `
-            <div class="empty-state">
-              <i class="far fa-folder-open"></i>
-              <h4>No quote requests found</h4>
-              <p>When you submit a quote request from the Services page, it will display here.</p>
-            </div>
-          `;
-          return;
-        }
-
-        // Generate quotes markup (newest first)
-        quotesContainer.innerHTML = quotes.map((q) => {
-          const dateStr = new Date(q.date).toLocaleString('en-GB', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-
-          const detailsHTML = q.details && q.details.length > 0
-            ? q.details.map(item => `• ${item}`).join('<br>')
-            : 'No options selected';
-
-          return `
-            <div class="quote-card animate-on-scroll show">
-              <div class="quote-header">
-                <div>
-                  <span class="quote-type">${q.type}</span>
-                  <div class="quote-date" style="margin-top: 4px;">Submitted: ${dateStr}</div>
-                </div>
-                <span class="quote-status-badge status-pending">
-                  <i class="far fa-clock"></i> Pending
-                </span>
-              </div>
-              <div class="quote-details-list">
-                ${detailsHTML}
-              </div>
-              <div class="quote-footer">
-                <span style="font-size: 0.85rem; color: var(--text-muted);">Estimates are subject to full inspection</span>
-                <span class="quote-price-tag">${q.price}</span>
-              </div>
-            </div>
-          `;
-        }).reverse().join('');
-      }
-
-      // Notification helpers
-      function showSuccess(msg) {
-        successMessage.innerText = msg;
-        successAlert.style.display = 'flex';
-        errorAlert.style.display = 'none';
-        
-        setTimeout(() => {
-          successAlert.style.display = 'none';
-        }, 5000);
-      }
-
-      function showError(msg) {
-        errorMessage.innerText = msg;
-        errorAlert.style.display = 'flex';
-        successAlert.style.display = 'none';
-      }
-
-      // Handle Profile Updates
-      profileUpdateForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const nameVal = fullNameInput.value.trim();
-        const phoneVal = phoneInput.value.trim();
-
-        if (!nameVal) {
-          showError('Full Name is required.');
-          fullNameInput.focus();
-          return;
-        }
-
-        if (!phoneVal) {
-          showError('Phone Number is required.');
-          phoneInput.focus();
-          return;
-        }
-
-        saveProfileBtn.classList.add('btn-loading');
-        saveProfileBtn.disabled = true;
-
-        setTimeout(() => {
-          try {
-            window.LocalDatabase.updateUserProfile(nameVal, phoneVal);
-            saveProfileBtn.classList.remove('btn-loading');
-            saveProfileBtn.disabled = false;
-            
-            showSuccess('Profile updated successfully!');
-            populateUserData();
-          } catch (err) {
-            saveProfileBtn.classList.remove('btn-loading');
-            saveProfileBtn.disabled = false;
-            showError(err.message);
-          }
-        }, 600);
-      });
-
-      // Handle Logout
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Clear local database session
-        window.LocalDatabase.clearSession();
-        
-        // Redirect to homepage
-        window.location.href = 'index.html';
-      });
-
-      // Initialize
-      populateUserData();
-
-      // Interactive radial mouse glow inside glass-cards
-      document.querySelectorAll('.glass-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          card.style.setProperty('--mouse-x', `${x}px`);
-          card.style.setProperty('--mouse-y', `${y}px`);
-        });
-      });
-    });
-  </script>
+  <!-- Supabase & Dashboard Logic -->
+  <script src="js/supabase.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 
 </html>
