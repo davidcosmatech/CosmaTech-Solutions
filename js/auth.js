@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initAuth() {
   const isRo = document.documentElement.lang === 'ro' || window.location.pathname.includes('/ro/');
 
   // ==========================================
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSupabase().then(() => {
     if (window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      
+
       // Wire reactive navbar updates to Supabase Auth state changes
       if (!document.body.hasAttribute('data-auth-page')) {
         supabaseClient.auth.onAuthStateChange(() => {
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tokenStr) return null;
         const tokenData = JSON.parse(tokenStr);
         if (!tokenData || !tokenData.user) return null;
-        
+
         const user = tokenData.user;
         const meta = user.user_metadata || {};
         const email = user.email;
@@ -240,11 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('authModalClose').addEventListener('click', () => hideModal(authModal));
     document.getElementById('profileModalClose').addEventListener('click', () => hideModal(profileModal));
-    
+
     authModal.addEventListener('click', (e) => {
       if (e.target === authModal) hideModal(authModal);
     });
-    
+
     profileModal.addEventListener('click', (e) => {
       if (e.target === profileModal) hideModal(profileModal);
     });
@@ -287,6 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const navLinks = document.getElementById('navLinks');
 
       if (!actions) return;
+
+      const basePrefix = window.location.pathname.includes('/ro/') ? '../' : '';
 
       // Desktop Navbar Auth Buttons
       let authWrapper = document.getElementById('navbarAuthWrapper');
@@ -358,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dropMenu.style.display = isDisplayed ? 'none' : 'flex';
             dropBtn.querySelector('.fa-chevron-down').style.transform = isDisplayed ? 'rotate(0)' : 'rotate(180deg)';
           });
-          
+
           document.addEventListener('click', () => {
             dropMenu.style.display = 'none';
             const icon = dropBtn.querySelector('.fa-chevron-down');
@@ -376,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mobileAuthWrapper) {
           const mobProf = mobileAuthWrapper.querySelector('.mobile-profile-trigger');
           if (mobProf) mobProf.addEventListener('click', (e) => { e.preventDefault(); openProfileModal(); });
-          
+
           const mobLog = mobileAuthWrapper.querySelector('.mobile-logout-trigger');
           if (mobLog) mobLog.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
         }
@@ -384,25 +386,16 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Logged Out Desktop navbar
         authWrapper.innerHTML = `
-          <a href="#" id="navLoginBtn" style="font-weight:600; font-size:0.9rem; color:var(--text-secondary); margin-right:20px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
-          <a href="#" class="btn btn-secondary" id="navSignupBtn" style="padding:8px 16px; font-size:0.85rem; margin-right:15px; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
+          <a href="${basePrefix}signin.html" id="navLoginBtn" style="font-weight:600; font-size:0.9rem; color:var(--text-secondary); margin-right:20px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
+          <a href="${basePrefix}signup.html" class="btn btn-secondary" id="navSignupBtn" style="padding:8px 16px; font-size:0.85rem; margin-right:15px; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
         `;
 
         // Logged Out Mobile sidebar
         if (mobileAuthWrapper) {
           mobileAuthWrapper.innerHTML = `
-            <a href="#" class="mobile-login-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
-            <a href="#" class="mobile-signup-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
+            <a href="${basePrefix}signin.html" class="mobile-login-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
+            <a href="${basePrefix}signup.html" class="mobile-signup-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
           `;
-        }
-
-        // Add click events to triggers
-        document.getElementById('navLoginBtn').addEventListener('click', (e) => { e.preventDefault(); triggerAuth('login'); });
-        document.getElementById('navSignupBtn').addEventListener('click', (e) => { e.preventDefault(); triggerAuth('signup'); });
-
-        if (mobileAuthWrapper) {
-          mobileAuthWrapper.querySelector('.mobile-login-trigger').addEventListener('click', (e) => { e.preventDefault(); triggerAuth('login'); });
-          mobileAuthWrapper.querySelector('.mobile-signup-trigger').addEventListener('click', (e) => { e.preventDefault(); triggerAuth('signup'); });
         }
       }
     }
@@ -421,14 +414,14 @@ document.addEventListener('DOMContentLoaded', () => {
         await LocalDatabase.registerUser(name, email, password, phone);
         hideModal(authModal);
         updateNavbar();
-        
+
         // Reset form
         document.getElementById('signupForm').reset();
-        
+
         showSuccessNotification(
           isRo ? 'Înregistrare Reușită!' : 'Registration Successful!',
           isRo ? `Contul tău a fost creat cu succes. Bun venit, <strong>${name}</strong>!`
-               : `Your account has been successfully created. Welcome, <strong>${name}</strong>!`
+            : `Your account has been successfully created. Welcome, <strong>${name}</strong>!`
         );
       } catch (err) {
         alert(err.message);
@@ -444,14 +437,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const user = await LocalDatabase.loginUser(email, password);
         hideModal(authModal);
         updateNavbar();
-        
+
         // Reset form
         document.getElementById('loginForm').reset();
 
         showSuccessNotification(
           isRo ? 'Conectare Reușită!' : 'Login Successful!',
           isRo ? `Te-ai conectat cu succes ca <strong>${user.name}</strong>.`
-               : `You have successfully logged in as <strong>${user.name}</strong>.`
+            : `You have successfully logged in as <strong>${user.name}</strong>.`
         );
       } catch (err) {
         alert(err.message);
@@ -537,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const notificationBackdrop = document.createElement('div');
       notificationBackdrop.className = 'modal-backdrop show';
       notificationBackdrop.style.zIndex = '3000';
-      
+
       notificationBackdrop.innerHTML = `
         <div class="modal-window glass-card animate-on-scroll show" style="max-width: 420px; text-align: center; margin: auto;">
           <div class="modal-body">
@@ -564,4 +557,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Navbar UI on load
     updateNavbar();
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+  initAuth();
+}
+
+

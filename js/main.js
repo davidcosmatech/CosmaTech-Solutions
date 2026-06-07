@@ -1,8 +1,3 @@
-// Load auth.js dynamically
-const authScript = document.createElement('script');
-authScript.src = window.location.pathname.includes('/ro/') ? '../js/auth.js' : 'js/auth.js';
-document.head.appendChild(authScript);
-
 document.addEventListener('DOMContentLoaded', () => {
   const isRo = document.documentElement.lang === 'ro' || window.location.pathname.includes('/ro/');
   
