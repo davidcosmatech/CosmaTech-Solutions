@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | CosmaTech Solutions</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Sign in to your CosmaTech Solutions account to view your project updates, quote request history, and active web hosting services.">
+  <meta name="keywords" content="sign in, login, CosmaTech Solutions, client portal">
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-auth-page="true">
+
+  <!-- Background Glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="auth-page-wrapper">
+    <div class="auth-card">
+      
+      <!-- Logo Container -->
+      <div class="auth-logo-container">
+        <a href="index.html">
+          <img src="images/cosmatech logo.png" alt="CosmaTech Solutions" class="logo-img" style="height: 48px;">
+        </a>
+      </div>
+
+      <!-- Glassmorphic Card -->
+      <div class="glass-card">
+        
+        <!-- Header -->
+        <div class="auth-header">
+          <h2>Welcome Back</h2>
+          <p>Please enter your credentials to access your account</p>
+        </div>
+
+        <!-- Alert Container -->
+        <div class="auth-alert auth-alert-danger" id="errorAlert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorMessage">Invalid email or password.</span>
+        </div>
+
+        <!-- Form -->
+        <form id="signInForm" novalidate style="margin-top: 16px;">
+          
+          <!-- Email Field -->
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+              <button type="button" class="password-toggle-btn" id="passwordToggle" aria-label="Toggle password visibility">
+                <i class="far fa-eye" id="toggleIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="form-footer-row">
+            <label class="remember-me-label" for="rememberMe">
+              <input type="checkbox" id="rememberMe">
+              <span>Remember Me</span>
+            </label>
+            <a href="#" class="forgot-password-link" id="forgotPasswordBtn">Forgot Password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%; justify-content: center;">
+            Sign In <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i>
+          </button>
+
+        </form>
+
+        <!-- Redirect Link -->
+        <div class="auth-footer-text">
+          Don't have an account? <a href="signup.html">Create one here</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Auth Engine script -->
+  <script src="js/auth.js"></script>
+  
+  <!-- Interactive Form and Validation Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const signInForm = document.getElementById('signInForm');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('passwordToggle');
+      const toggleIcon = document.getElementById('toggleIcon');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+      const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+
+      // Toggle Password Visibility
+      passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        toggleIcon.className = isPassword ? 'far fa-eye-slash' : 'far fa-eye';
+      });
+
+      // Show error helper
+      function showError(msg) {
+        errorMessage.innerText = msg;
+        errorAlert.style.display = 'flex';
+      }
+
+      // Hide error helper
+      function hideError() {
+        errorAlert.style.display = 'none';
+      }
+
+      // Email formatting validation
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email.toLowerCase());
+      }
+
+      // Forgot Password trigger
+      forgotPasswordBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Password recovery link has been sent if this email is registered in our records. (Static Demonstration)');
+      });
+
+      // Handle Signin Submission
+      signInForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        // Front-end validations
+        if (!email) {
+          showError('Email Address is required.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          showError('Please enter a valid email address.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!password) {
+          showError('Password is required.');
+          passwordInput.focus();
+          return;
+        }
+
+        // Enable Loading State
+        submitBtn.classList.add('btn-loading');
+        submitBtn.disabled = true;
+
+        // Simulate network delay for premium feel
+        setTimeout(async () => {
+          try {
+            // Attempt to login using database layer exposed on window
+            if (!window.LocalDatabase) {
+              throw new Error('Local database engine not loaded.');
+            }
+
+            await window.LocalDatabase.loginUser(email, password);
+
+            // Successfully authenticated, redirect to dashboard
+            window.location.href = 'dashboard.html';
+
+          } catch (err) {
+            // Disable loading state
+            submitBtn.classList.remove('btn-loading');
+            submitBtn.disabled = false;
+            showError(err.message);
+          }
+        }, 800); // 800ms elegant delay
+      });
+      
+      // Interactive radial mouse glow inside glass-card
+      const card = document.querySelector('.glass-card');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  </script>
+</body>
+
+</html>

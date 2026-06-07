@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | CosmaTech Solutions</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Join CosmaTech Solutions. Register an account to submit quote requests, check repair status, and manage domain hosting services.">
+  <meta name="keywords" content="sign up, register, CosmaTech Solutions, client registration">
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-auth-page="true">
+
+  <!-- Background Glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="auth-page-wrapper">
+    <div class="auth-card" style="max-width: 550px;"> <!-- Slightly wider for registration grid -->
+      
+      <!-- Logo Container -->
+      <div class="auth-logo-container">
+        <a href="index.html">
+          <img src="images/cosmatech logo.png" alt="CosmaTech Solutions" class="logo-img" style="height: 48px;">
+        </a>
+      </div>
+
+      <!-- Glassmorphic Card -->
+      <div class="glass-card" style="padding: 36px 40px;">
+        
+        <!-- Header -->
+        <div class="auth-header">
+          <h2>Create Account</h2>
+          <p>Get started with your custom client portal</p>
+        </div>
+
+        <!-- Alert Container -->
+        <div class="auth-alert auth-alert-danger" id="errorAlert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorMessage">Invalid registration details.</span>
+        </div>
+
+        <!-- Form -->
+        <form id="signUpForm" novalidate style="margin-top: 16px;">
+          
+          <!-- Name Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" class="form-control" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" class="form-control" placeholder="Doe" required>
+            </div>
+          </div>
+
+          <!-- Email Address -->
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" class="form-control" placeholder="07123 456789" required>
+          </div>
+
+          <!-- Password Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" class="password-fields-grid">
+            <div class="form-group">
+              <label for="password">Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                <button type="button" class="password-toggle-btn" id="passwordToggle" aria-label="Toggle password visibility">
+                  <i class="far fa-eye" id="toggleIcon"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password *</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="confirmPassword" class="form-control" placeholder="••••••••" required>
+                <button type="button" class="password-toggle-btn" id="confirmPasswordToggle" aria-label="Toggle password visibility">
+                  <i class="far fa-eye" id="confirmToggleIcon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms and Conditions Checkbox -->
+          <div class="form-group" style="margin-top: 8px;">
+            <label class="remember-me-label" for="terms" style="text-transform: none; font-size: 0.88rem; letter-spacing: 0;">
+              <input type="checkbox" id="terms" required>
+              <span>I agree to the <a href="#" style="color: var(--accent-light); font-weight: 500;" id="termsLink">Terms & Conditions</a></span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%; justify-content: center; margin-top: 8px;">
+            Create Account <i class="fas fa-user-plus" style="margin-left: 8px;"></i>
+          </button>
+
+        </form>
+
+        <!-- Redirect Link -->
+        <div class="auth-footer-text">
+          Already have an account? <a href="signin.html">Sign In instead</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Auth Engine script -->
+  <script src="js/auth.js"></script>
+  
+  <!-- Interactive Form and Validation Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const signUpForm = document.getElementById('signUpForm');
+      const firstNameInput = document.getElementById('firstName');
+      const lastNameInput = document.getElementById('lastName');
+      const emailInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const termsInput = document.getElementById('terms');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+      const termsLink = document.getElementById('termsLink');
+
+      // Password Toggles
+      const passwordToggle = document.getElementById('passwordToggle');
+      const toggleIcon = document.getElementById('toggleIcon');
+      passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        toggleIcon.className = isPassword ? 'far fa-eye-slash' : 'far fa-eye';
+      });
+
+      const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+      const confirmToggleIcon = document.getElementById('confirmToggleIcon');
+      confirmPasswordToggle.addEventListener('click', () => {
+        const isPassword = confirmPasswordInput.getAttribute('type') === 'password';
+        confirmPasswordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        confirmToggleIcon.className = isPassword ? 'far fa-eye-slash' : 'far fa-eye';
+      });
+
+      // Show/Hide error helper
+      function showError(msg) {
+        errorMessage.innerText = msg;
+        errorAlert.style.display = 'flex';
+      }
+
+      function hideError() {
+        errorAlert.style.display = 'none';
+      }
+
+      // Validations
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email.toLowerCase());
+      }
+
+      function isValidPhone(phone) {
+        // Simple numeric and length validation for demonstration
+        const clean = phone.replace(/[^0-9+]/g, '');
+        return clean.length >= 7 && clean.length <= 15;
+      }
+
+      // Terms link click
+      termsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Terms and Conditions: Standard service agreement for project creation, IT repairs, and domain management. By creating an account you agree to use our systems in accordance with local regulations.');
+      });
+
+      // Handle Form Submit
+      signUpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError();
+
+        const firstName = firstNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const email = emailInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const termsChecked = termsInput.checked;
+
+        // Front-end validations
+        if (!firstName) {
+          showError('First Name is required.');
+          firstNameInput.focus();
+          return;
+        }
+
+        if (!lastName) {
+          showError('Last Name is required.');
+          lastNameInput.focus();
+          return;
+        }
+
+        if (!email) {
+          showError('Email Address is required.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          showError('Please enter a valid email address.');
+          emailInput.focus();
+          return;
+        }
+
+        if (!phone) {
+          showError('Phone Number is required.');
+          phoneInput.focus();
+          return;
+        }
+
+        if (!isValidPhone(phone)) {
+          showError('Please enter a valid phone number.');
+          phoneInput.focus();
+          return;
+        }
+
+        if (!password) {
+          showError('Password is required.');
+          passwordInput.focus();
+          return;
+        }
+
+        if (password.length < 6) {
+          showError('Password must be at least 6 characters long.');
+          passwordInput.focus();
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showError('Passwords do not match.');
+          confirmPasswordInput.focus();
+          return;
+        }
+
+        if (!termsChecked) {
+          showError('You must agree to the Terms & Conditions.');
+          return;
+        }
+
+        // Enable Loading State
+        submitBtn.classList.add('btn-loading');
+        submitBtn.disabled = true;
+
+        // Concatenate first and last name to register under the 'name' database field
+        const fullName = `${firstName} ${lastName}`;
+
+        // Simulate network delay for premium feel
+        setTimeout(async () => {
+          try {
+            if (!window.LocalDatabase) {
+              throw new Error('Local database engine not loaded.');
+            }
+
+            // Register user in localStorage database
+            await window.LocalDatabase.registerUser(fullName, email, password, phone);
+
+            // Successfully registered and session created. Redirect to dashboard
+            window.location.href = 'dashboard.html';
+
+          } catch (err) {
+            // Disable loading state
+            submitBtn.classList.remove('btn-loading');
+            submitBtn.disabled = false;
+            showError(err.message);
+          }
+        }, 800); // 800ms elegant delay
+      });
+
+      // Interactive radial mouse glow inside glass-card
+      const card = document.querySelector('.glass-card');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  </script>
+</body>
+
+</html>

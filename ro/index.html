@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CosmaTech Solutions | Web Development, IT Repairs & Hosting</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Servicii profesionale de web development, reparații laptop & PC și soluții de hosting web oferite de CosmaTech Solutions. Asamblări PC personalizate. Cere o ofertă gratuită!">
+  <meta name="keywords"
+    content="web development, reparatii calculatoare, reparatii laptop, hosting web, domenii, asamblare pc, CosmaTech Solutions, TechMaster">
+
+  <link rel="icon" type="image/png"
+    href="../images/favicon.png">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- Fundal Glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Bara de Navigare (Header) -->
+  <header id="navbar" class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="../images/cosmatech%20logo.png" alt="CosmaTech Solutions" class="logo-img">
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Acasă</a></li>
+        <li><a href="services.html">Servicii</a></li>
+        <li><a href="pc-prebuilt.html">PC-uri Pre-built</a></li>
+        <li><a href="about.html">Despre noi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="navbar-btn-mobile"><a href="#" class="btn btn-primary btn-quote-trigger">Solicită ofertă</a></li>
+      </ul>
+
+      <div class="navbar-actions">
+        <div class="navbar-btn">
+          <a href="#" class="btn btn-primary btn-quote-trigger">Solicită ofertă</a>
+        </div>
+        <a href="../index.html" class="lang-toggle-link"><img src="https://flagcdn.com/16x12/gb.png" alt="English"> EN</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" style="min-height: 100vh;">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content animate-on-scroll show">
+          <span class="badge" style="color: var(--accent-light); font-weight: 700; margin-bottom: 20px;">
+            <i class="fas fa-code" style="margin-right: 6px;"></i> WEB DEVELOPMENT • REPAIR • HOSTING
+          </span>
+          <h1 class="hero-title text-gradient" style="font-size: 3.2rem; margin-bottom: 20px; line-height: 1.1;">
+            SOLUȚII DIGITALE <span class="text-accent-gradient">COMPLETE</span> PENTRU AFACEREA TA
+          </h1>
+          <p class="hero-subtitle" style="font-size: 1.1rem; margin-bottom: 36px; color: var(--text-secondary);">
+            Creăm site-uri performante, reparăm calculatoare și laptopuri și oferim hosting rapid și sigur pentru ca tu
+            să te poți concentra pe ceea ce contează.
+          </p>
+          <div class="hero-btns" style="margin-bottom: 40px;">
+            <a href="services.html" class="btn btn-primary">Descoperă serviciile <i class="fas fa-arrow-right"></i></a>
+            <a href="contact.html" class="btn btn-secondary"><i class="fas fa-phone" style="margin-right: 6px;"></i>
+              Contactează-ne</a>
+          </div>
+
+          <!-- Indicatori de Incredere de sub Butoane -->
+          <div class="hero-features-row"
+            style="display: flex; gap: 32px; border-top: 1px solid var(--border-glass); padding-top: 24px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="far fa-clock" style="color: var(--accent-light); font-size: 1.2rem;"></i>
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">RAPIDITATE</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Livrare la timp</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="far fa-check-circle" style="color: var(--accent-light); font-size: 1.2rem;"></i>
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">CALITATE</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Soluții premium</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="far fa-comments" style="color: var(--accent-light); font-size: 1.2rem;"></i>
+              <div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF;">SUPORT</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Asistență dedicată</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-graphic">
+          <!-- Bancul de lucru tech cu laptopul generat -->
+          <div class="dashboard-mock"
+            style="border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <div class="dashboard-header"
+              style="height: 36px; background: rgba(15,23,42,0.8); display: flex; align-items: center; padding: 0 16px; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span
+                style="font-size: 0.75rem; color: var(--text-muted); margin-left: auto; font-family: monospace;">workstation.display</span>
+            </div>
+            <img src="../assets/hero-laptop.png" alt="CosmaTech Workstation Display"
+              style="width: 100%; display: block; object-fit: cover; height: 350px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sectiunea Servicii -->
+  <section class="section-padding" id="services">
+    <div class="container">
+      <div class="section-header text-center animate-on-scroll">
+        <span class="badge">SERVICIILE NOASTRE</span>
+        <h2 class="section-title text-gradient">Tot ce ai nevoie, într-un singur loc</h2>
+        <p class="section-desc">Îți oferim o gamă largă de servicii tehnologice integrate, executate la cele mai înalte
+          standarde de calitate.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Card 1: Web Development -->
+        <div class="glass-card service-card animate-on-scroll">
+          <div class="service-icon"
+            style="width: 50px; height: 50px; border-radius: 8px; background: var(--accent); color: #FFFFFF; font-size: 1.25rem;">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3>Web Development</h3>
+          <p>Creăm site-uri moderne, rapide și optimizate pentru orice tip de afacere.</p>
+          <ul class="pricing-features" style="margin-bottom: 24px; text-align: left; list-style: none;">
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Site-uri de prezentare</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Magazine online</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Aplicații web personalizate</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Optimizare SEO</li>
+          </ul>
+          <a href="services.html#webdev" class="service-link">Află mai multe <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Card 2: Service & Repair -->
+        <div class="glass-card service-card animate-on-scroll">
+          <div class="service-icon"
+            style="width: 50px; height: 50px; border-radius: 8px; background: var(--accent); color: #FFFFFF; font-size: 1.25rem;">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3>Service & Repair</h3>
+          <p>Reparăm calculatoare și laptopuri rapid și eficient, indiferent de problemă.</p>
+          <ul class="pricing-features" style="margin-bottom: 24px; text-align: left; list-style: none;">
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Diagnosticare gratuită</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Reparații hardware & software</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Înlocuire componente</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Curățare & mentenanță</li>
+          </ul>
+          <a href="services.html#repairs" class="service-link">Află mai multe <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Card 3: Hosting & Domenii -->
+        <div class="glass-card service-card animate-on-scroll">
+          <div class="service-icon"
+            style="width: 50px; height: 50px; border-radius: 8px; background: var(--accent); color: #FFFFFF; font-size: 1.25rem;">
+            <i class="fas fa-cloud"></i>
+          </div>
+          <h3>Hosting & Domenii</h3>
+          <p>Oferim soluții de hosting rapide, securizate și scalabile pentru site-ul tău.</p>
+          <ul class="pricing-features" style="margin-bottom: 24px; text-align: left; list-style: none;">
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Hosting SSD Ultra-Rapid</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Domenii incluse</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> SSL Gratuit</li>
+            <li><i class="fas fa-check" style="color: var(--accent-light);"></i> Backup zilnic</li>
+          </ul>
+          <a href="services.html#hosting" class="service-link">Află mai multe <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sectiunea Statistiici Cifre -->
+  <section class="section-padding" style="background: rgba(15, 23, 42, 0.25);">
+    <div class="container">
+      <div class="stats-row"
+        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center;">
+        <div class="animate-on-scroll">
+          <i class="fas fa-laptop-code" style="font-size: 2.2rem; color: var(--accent-light); margin-bottom: 16px;"></i>
+          <div style="font-size: 2.5rem; font-weight: 800; color: #FFFFFF; line-height: 1;">100+</div>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; font-weight: 600;">Proiecte
+            finalizate</div>
+        </div>
+        <div class="animate-on-scroll">
+          <i class="fas fa-users-gear" style="font-size: 2.2rem; color: var(--accent-light); margin-bottom: 16px;"></i>
+          <div style="font-size: 2.5rem; font-weight: 800; color: #FFFFFF; line-height: 1;">98%</div>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; font-weight: 600;">Clienți
+            mulțumiți</div>
+        </div>
+        <div class="animate-on-scroll">
+          <i class="fas fa-award" style="font-size: 2.2rem; color: var(--accent-light); margin-bottom: 16px;"></i>
+          <div style="font-size: 2.5rem; font-weight: 800; color: #FFFFFF; line-height: 1;">5+</div>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; font-weight: 600;">Ani
+            experiență</div>
+        </div>
+        <div class="animate-on-scroll">
+          <i class="fas fa-headset" style="font-size: 2.2rem; color: var(--accent-light); margin-bottom: 16px;"></i>
+          <div style="font-size: 2.5rem; font-weight: 800; color: #FFFFFF; line-height: 1;">24/7</div>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 8px; font-weight: 600;">Suport tehnic
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blue CTA Banner: Ai un proiect in minte? -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="glass-card animate-on-scroll"
+        style="background: linear-gradient(135deg, rgba(37,99,235,0.2) 0%, rgba(15,23,42,0.6) 100%); border-color: rgba(37,99,235,0.3); padding: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+        <div style="display: flex; align-items: center; gap: 24px; flex: 1; min-width: 300px;">
+          <div
+            style="width: 60px; height: 60px; border-radius: 50%; background: var(--accent-glow-strong); display: flex; align-items: center; justify-content: center; color: var(--accent-light); font-size: 1.6rem; flex-shrink: 0;">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 6px;">Ai un proiect în minte?</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Hai să îl transformăm în realitate.
+              Contactează-ne pentru o ofertă personalizată!</p>
+          </div>
+        </div>
+        <a href="contact.html" class="btn btn-primary"
+          style="background: var(--accent); padding: 12px 32px; border-radius: 8px;">Contactează-ne acum <i
+            class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap Roadmap pana la Lansare (Timeline) -->
+  <section class="section-padding" style="background: rgba(15, 23, 42, 0.25);">
+    <div class="container">
+      <div class="section-header text-center animate-on-scroll">
+        <span class="badge">FLUX DE LUCRU</span>
+        <h2 class="section-title text-gradient">ROADMAP PÂNĂ LA LANSARE</h2>
+        <p class="section-desc">Procesul nostru structurat garantează calitatea și livrarea la timp a fiecărui proiect
+          web.</p>
+      </div>
+
+      <div class="roadmap-container">
+        <div class="roadmap-grid">
+          <!-- Step 1 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">1</div>
+            <div class="roadmap-day">Phase 1</div>
+            <div class="roadmap-title">PLANIFICARE</div>
+            <ul class="roadmap-bullets">
+              <li>Definirea obiectivelor</li>
+              <li>Analiza concurenței</li>
+              <li>Stabilirea publicului țintă</li>
+              <li>Structura generală a site-ului</li>
+            </ul>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">2</div>
+            <div class="roadmap-day">Phase 2</div>
+            <div class="roadmap-title">BRANDING & DESIGN</div>
+            <ul class="roadmap-bullets">
+              <li>Crearea identității vizuale</li>
+              <li>Alegerea paletei de culori</li>
+              <li>Design homepage</li>
+              <li>Design pagini interioare</li>
+            </ul>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">3</div>
+            <div class="roadmap-day">Phase 3</div>
+            <div class="roadmap-title">DEZVOLTARE FRONTEND</div>
+            <ul class="roadmap-bullets">
+              <li>Setup proiect</li>
+              <li>Dezvoltare header & footer</li>
+              <li>Crearea paginii principale</li>
+              <li>Design responsive</li>
+            </ul>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">4</div>
+            <div class="roadmap-day">Phase 4</div>
+            <div class="roadmap-title">DEZVOLTARE BACKEND</div>
+            <ul class="roadmap-bullets">
+              <li>Integrare CMS</li>
+              <li>Configurare formulare</li>
+              <li>Optimizare viteză</li>
+              <li>Securitate de bază</li>
+            </ul>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">5</div>
+            <div class="roadmap-day">Phase 5</div>
+            <div class="roadmap-title">CONȚINUT</div>
+            <ul class="roadmap-bullets">
+              <li>Scriere texte (SEO)</li>
+              <li>Optimizare imagini</li>
+              <li>Adăugare conținut</li>
+              <li>Verificare & corecturi</li>
+            </ul>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">6</div>
+            <div class="roadmap-day">Phase 6</div>
+            <div class="roadmap-title">TESTARE</div>
+            <ul class="roadmap-bullets">
+              <li>Testare funcționalități</li>
+              <li>Testare pe diferite dispozitive</li>
+              <li>Optimizare finală</li>
+              <li>Verificare SEO</li>
+            </ul>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="roadmap-node animate-on-scroll">
+            <div class="roadmap-dot">7</div>
+            <div class="roadmap-day">Phase 7</div>
+            <div class="roadmap-title">LANSARE</div>
+            <ul class="roadmap-bullets">
+              <li>Deploy pe server</li>
+              <li>Verificare finală</li>
+              <li>Lansare site</li>
+              <li>Monitorizare inițială</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Roadmap: Lansare & Crestere -->
+      <div class="roadmap-growth animate-on-scroll">
+        <h3 class="growth-title text-gradient">LANSARE & CREȘTERE 🚀</h3>
+        <ul class="growth-list">
+          <li class="growth-item"><i class="fas fa-circle-check"></i> Monitorizare performanță</li>
+          <li class="growth-item"><i class="fas fa-circle-check"></i> Colectare feedback</li>
+          <li class="growth-item"><i class="fas fa-circle-check"></i> Îmbunătățiri continue</li>
+          <li class="growth-item"><i class="fas fa-circle-check"></i> Noi funcționalități</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <h3>CosmaTech <span>Solutions</span></h3>
+          <p class="footer-desc">Companie IT profesională care oferă servicii fiabile de dezvoltare web, reparații
+            hardware pentru PC/laptop și soluții de hosting securizate în cloud.</p>
+          <div class="footer-contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:contact@cosmatech.co.uk">contact@cosmatech.co.uk</a>
+          </div>
+          <div class="footer-contact-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:07538533646">07538533646</a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4>Link-uri Rapide</h4>
+          <ul>
+            <li><a href="index.html">Acasă</a></li>
+            <li><a href="services.html">Servicii IT</a></li>
+            <li><a href="pc-prebuilt.html">Sisteme Pre-Built</a></li>
+            <li><a href="about.html">Despre Noi</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-social">
+          <h4>Urmărește-ne</h4>
+          <div class="social-icons">
+            <a href="https://facebook.com/" target="_blank" class="social-icon" aria-label="Facebook"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/" target="_blank" class="social-icon" aria-label="Instagram"><i
+                class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/" target="_blank" class="social-icon" aria-label="TikTok"><i
+                class="fab fa-tiktok"></i></a>
+            <a href="https://linkedin.com/" target="_blank" class="social-icon" aria-label="LinkedIn"><i
+                class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 CosmaTech Solutions. Toate drepturile rezervate.</p>
+        <p>Proiectat pentru viteză, stabilitate și performanță.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+      Interactive Step-by-Step Quote Modal (Ro)
+  =========================================== -->
+  <!-- Selector Modal Bridge -->
+  <div id="selectorModal" class="modal-backdrop">
+    <div class="modal-window glass-card" style="max-width: 550px;">
+      <button class="modal-close" aria-label="Închide">&times;</button>
+      <div class="modal-body text-center">
+        <h3 style="margin-bottom: 24px;">Ce serviciu te interesează?</h3>
+        <div class="service-selector-grid grid-2col">
+          <div class="selector-card bridge-selector-card" data-bridge-to="webdev">
+            <i class="fas fa-code"></i><span>Web Development</span>
+          </div>
+          <div class="selector-card bridge-selector-card" data-bridge-to="repair">
+            <i class="fas fa-tools"></i><span>Reparații IT</span>
+          </div>
+          <div class="selector-card bridge-selector-card" data-bridge-to="hosting">
+            <i class="fas fa-cloud"></i><span>Hosting Web</span>
+          </div>
+          <div class="selector-card bridge-selector-card" data-bridge-to="pcbuild">
+            <i class="fas fa-desktop"></i><span>PC Personalizat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Web Dev Modal -->
+  <div id="webdevModal" class="modal-backdrop">
+    <div class="modal-window glass-card" style="max-width: 650px;">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body">
+        <h3 style="margin-bottom: 8px;">Cotație Web Development</h3>
+        <div class="quote-steps">
+          <div class="step-indicator">
+            <div class="step-progress-bar"></div>
+            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+          </div>
+          <div class="quote-step-content active">
+            <h4 style="margin-bottom: 16px;">Pasul 1: Dimensiune Website</h4>
+            <input type="hidden" id="webScaleInput" value="small">
+            <div class="service-selector-grid grid-2col" style="gap: 12px;">
+              <div class="selector-card selected" data-value="small" data-input-target="webScaleInput" data-default="true">
+                <i class="fas fa-file-code"></i><span>Prezentare (1-4 pagini)<br><small>de la £249</small></span>
+              </div>
+              <div class="selector-card" data-value="medium" data-input-target="webScaleInput">
+                <i class="fas fa-copy"></i><span>Business (5-10 pagini)<br><small>de la £399</small></span>
+              </div>
+              <div class="selector-card" data-value="ecommerce" data-input-target="webScaleInput">
+                <i class="fas fa-cart-shopping"></i><span>E-commerce / Magazin<br><small>de la £699</small></span>
+              </div>
+              <div class="selector-card" data-value="customapp" data-input-target="webScaleInput">
+                <i class="fas fa-cubes"></i><span>Aplicație Personalizată<br><small>de la £999</small></span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 2: Funcționalități Dorite</h4>
+            <div class="features-grid-choice">
+              <label class="feature-checkbox-label"><input type="checkbox" id="featBlog"><span>Secțiune Blog (+£80)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featAuth"><span>Autentificare Conturi (+£150)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featPay"><span>Plăți Card Online (+£120)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featChat"><span>Integrare WhatsApp (+£40)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featLang"><span>Site Multilingv (+£100)</span></label>
+              <label class="feature-checkbox-label"><input type="checkbox" id="featSeo"><span>Pachet SEO Avansat (+£70)</span></label>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 3: Logo & Identitate Vizuală</h4>
+            <input type="hidden" id="webDesignInput" value="exists">
+            <div class="service-selector-grid grid-1col" style="gap: 10px;">
+              <div class="selector-card selected" data-value="exists" data-input-target="webDesignInput" data-default="true">
+                <span>Am deja Logo existent (Fără cost)</span>
+              </div>
+              <div class="selector-card" data-value="needed" data-input-target="webDesignInput">
+                <span>Am nevoie de logo / redesign logo (+£80)</span>
+              </div>
+              <div class="selector-card" data-value="branding" data-input-target="webDesignInput">
+                <span>Doresc Branding Complet (Logo, Paletă, Tipografii) (+£150)</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 4: Date de contact</h4>
+            <div class="form-group"><label>Nume complet *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
+              <div class="form-group"><label>Telefon *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+            </div>
+            <div class="form-group"><label>Detalii suplimentare</label><textarea class="form-control quote-notes" placeholder="Descrie pe scurt ce dorești de la site..."></textarea></div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 12px;">Pasul 5: Estimare Costuri</h4>
+            <div class="quote-summary-box">
+              <div class="summary-row"><span>Serviciu:</span><span id="webSummaryService" style="font-weight:600;"></span></div>
+              <div id="webSummaryItems"></div>
+              <div class="summary-row total"><span>Total estimat:</span><span id="webSummaryTotal" class="summary-val highlight"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Înapoi</button>
+          <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Repair Modal -->
+  <div id="repairModal" class="modal-backdrop">
+    <div class="modal-window glass-card" style="max-width: 600px;">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body">
+        <h3 style="margin-bottom: 8px;">Solicitare Reparație IT</h3>
+        <div class="quote-steps">
+          <div class="step-indicator">
+            <div class="step-progress-bar"></div>
+            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+          </div>
+          <div class="quote-step-content active">
+            <h4 style="margin-bottom: 16px;">Pasul 1: Tip Dispozitiv</h4>
+            <input type="hidden" id="repairDeviceInput" value="laptop">
+            <div class="service-selector-grid grid-2col" style="gap: 12px;">
+              <div class="selector-card selected" data-value="laptop" data-input-target="repairDeviceInput" data-default="true">
+                <i class="fas fa-laptop"></i><span>Laptop / Notebook</span>
+              </div>
+              <div class="selector-card" data-value="desktop" data-input-target="repairDeviceInput">
+                <i class="fas fa-desktop"></i><span>Desktop PC</span>
+              </div>
+              <div class="selector-card" data-value="macbook" data-input-target="repairDeviceInput">
+                <i class="fab fa-apple"></i><span>MacBook / iMac</span>
+              </div>
+              <div class="selector-card" data-value="console" data-input-target="repairDeviceInput">
+                <i class="fas fa-gamepad"></i><span>Consolă Gaming</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 2: Serviciu Solicitat</h4>
+            <input type="hidden" id="repairTypeInput" value="diagnostic">
+            <div class="service-selector-grid grid-1col" style="gap: 10px;">
+              <div class="selector-card selected" data-value="diagnostic" data-input-target="repairTypeInput" data-default="true">
+                <span>Diagnosticare Hardware & Depistare Erori - £25</span>
+              </div>
+              <div class="selector-card" data-value="clean" data-input-target="repairTypeInput">
+                <span>Curățare completă praf & Thermal paste - £40</span>
+              </div>
+              <div class="selector-card" data-value="upgrade" data-input-target="repairTypeInput">
+                <span>Upgrade SSD / Memorie RAM (Piese excluse) - £50</span>
+              </div>
+              <div class="selector-card" data-value="screen" data-input-target="repairTypeInput">
+                <span>Înlocuire Panou Ecran / Display Laptop - £80</span>
+              </div>
+              <div class="selector-card" data-value="virus" data-input-target="repairTypeInput">
+                <span>Devirusare, Optimizare Windows & Software - £40</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 3: Model & Brand Dispozitiv</h4>
+            <div class="form-group"><label>Brand și Model (ex: Asus TUF Gaming, MacBook Pro 2020) *</label><input type="text" class="form-control quote-brand" placeholder="Model dispozitiv" required></div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 4: Date de contact</h4>
+            <div class="form-group"><label>Nume complet *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
+              <div class="form-group"><label>Telefon *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+            </div>
+            <div class="form-group"><label>Descriere problemă</label><textarea class="form-control quote-notes" placeholder="Descrie pe scurt defectul manifestat..."></textarea></div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 12px;">Pasul 5: Estimare Reparație</h4>
+            <div class="quote-summary-box">
+              <div class="summary-row"><span>Serviciu:</span><span id="repairSummaryService" style="font-weight:600;"></span></div>
+              <div id="repairSummaryItems"></div>
+              <div class="summary-row total"><span>Total estimat:</span><span id="repairSummaryTotal" class="summary-val highlight"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Înapoi</button>
+          <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hosting Modal -->
+  <div id="hostingModal" class="modal-backdrop">
+    <div class="modal-window glass-card" style="max-width: 600px;">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body">
+        <h3 style="margin-bottom: 8px;">Configurare Hosting Web</h3>
+        <div class="quote-steps">
+          <div class="step-indicator">
+            <div class="step-progress-bar"></div>
+            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+          </div>
+          <div class="quote-step-content active">
+            <h4 style="margin-bottom: 16px;">Pasul 1: Alege Abonamentul</h4>
+            <input type="hidden" id="hostPlanInput" value="starter">
+            <div class="service-selector-grid grid-1col" style="gap: 10px;">
+              <div class="selector-card selected" data-value="starter" data-input-target="hostPlanInput" data-default="true">
+                <span>Starter Cloud Hosting - £5.99/lună</span>
+              </div>
+              <div class="selector-card" data-value="business" data-input-target="hostPlanInput">
+                <span>Business Cloud Hosting - £12.99/lună</span>
+              </div>
+              <div class="selector-card" data-value="ecommerce" data-input-target="hostPlanInput">
+                <span>E-commerce Cloud Hosting - £24.99/lună</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 2: Înregistrare Domeniu</h4>
+            <input type="hidden" id="hostDomainInput" value="none">
+            <div class="service-selector-grid grid-1col" style="gap: 10px;">
+              <div class="selector-card selected" data-value="none" data-input-target="hostDomainInput" data-default="true">
+                <span>Dețin deja un domeniu (Fără cost)</span>
+              </div>
+              <div class="selector-card" data-value="ukcom" data-input-target="hostDomainInput">
+                <span>Înregistrare Domeniu .com / .co.uk (+£10.00/an)</span>
+              </div>
+              <div class="selector-card" data-value="ro" data-input-target="hostDomainInput">
+                <span>Înregistrare Domeniu .ro (+£12.00/an)</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 3: Ciclu Facturare</h4>
+            <input type="hidden" id="hostCycleInput" value="monthly">
+            <div class="service-selector-grid grid-2col" style="gap: 12px;">
+              <div class="selector-card selected" data-value="monthly" data-input-target="hostCycleInput" data-default="true">
+                <span>Facturare Lunară</span>
+              </div>
+              <div class="selector-card" data-value="yearly" data-input-target="hostCycleInput">
+                <span>Facturare Anuală<br><small>(Economisești 10%)</small></span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 4: Date de contact</h4>
+            <div class="form-group"><label>Nume complet *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
+              <div class="form-group"><label>Telefon *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+            </div>
+            <div class="form-group"><label>Domeniu dorit / Detalii</label><input type="text" class="form-control quote-notes" placeholder="Introdu numele domeniului dorit..."></div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 12px;">Pasul 5: Rezumat Comandă</h4>
+            <div class="quote-summary-box">
+              <div class="summary-row"><span>Serviciu:</span><span id="hostSummaryService" style="font-weight:600;"></span></div>
+              <div id="hostSummaryItems"></div>
+              <div class="summary-row total"><span>Total estimat:</span><span id="hostSummaryTotal" class="summary-val highlight"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Înapoi</button>
+          <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom PC Build Modal -->
+  <div id="pcbuildModal" class="modal-backdrop">
+    <div class="modal-window glass-card" style="max-width: 600px;">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body">
+        <h3 style="margin-bottom: 8px;">Asamblare PC Personalizat</h3>
+        <div class="quote-steps">
+          <div class="step-indicator">
+            <div class="step-progress-bar"></div>
+            <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div>
+          </div>
+          <div class="quote-step-content active">
+            <h4 style="margin-bottom: 16px;">Pasul 1: Scop Utilizare</h4>
+            <input type="hidden" id="pcUsageInput" value="gaming">
+            <div class="service-selector-grid" style="gap: 10px;">
+              <div class="selector-card selected" data-value="gaming" data-input-target="pcUsageInput" data-default="true">
+                <i class="fas fa-gamepad"></i><span>Gaming / Media</span>
+              </div>
+              <div class="selector-card" data-value="work" data-input-target="pcUsageInput">
+                <i class="fas fa-briefcase"></i><span>Office / Studiu</span>
+              </div>
+              <div class="selector-card" data-value="streaming" data-input-target="pcUsageInput">
+                <i class="fas fa-video"></i><span>Editare & Stream</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 2: Buget Estimativ</h4>
+            <input type="hidden" id="pcBudgetInput" value="performance">
+            <div class="service-selector-grid grid-2col" style="gap: 12px;">
+              <div class="selector-card" data-value="office" data-input-target="pcBudgetInput">
+                <span>PC Office (Echipă/Scoală)<br><small>de la £349</small></span>
+              </div>
+              <div class="selector-card" data-value="starter" data-input-target="pcBudgetInput">
+                <span>PC Starter Gaming<br><small>de la £499</small></span>
+              </div>
+              <div class="selector-card selected" data-value="performance" data-input-target="pcBudgetInput" data-default="true">
+                <span>PC Performance Gaming<br><small>de la £899</small></span>
+              </div>
+              <div class="selector-card" data-value="ultimate" data-input-target="pcBudgetInput">
+                <span>PC Ultimate Custom<br><small>de la £1499</small></span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 3: Optimizări Răcire</h4>
+            <input type="hidden" id="pcOptionsInput" value="air">
+            <div class="service-selector-grid grid-1col" style="gap: 10px;">
+              <div class="selector-card selected" data-value="air" data-input-target="pcOptionsInput" data-default="true">
+                <span>Răcire Standard pe Aer (Inclusă)</span>
+              </div>
+              <div class="selector-card" data-value="water" data-input-target="pcOptionsInput">
+                <span>Răcire Lichidă AIO/Custom Loop (+£150)</span>
+              </div>
+            </div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 16px;">Pasul 4: Date de contact</h4>
+            <div class="form-group"><label>Nume complet *</label><input type="text" class="form-control quote-name" placeholder="John Doe"></div>
+            <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group"><label>Email *</label><input type="email" class="form-control quote-email" placeholder="john@example.com"></div>
+              <div class="form-group"><label>Telefon *</label><input type="tel" class="form-control quote-phone" placeholder="07123 456789"></div>
+            </div>
+            <div class="form-group"><label>Cerințe vizuale / Carcasă</label><textarea class="form-control quote-notes" placeholder="ex: Carcasă complet albă, lumini RGB sincronizate..."></textarea></div>
+          </div>
+          <div class="quote-step-content">
+            <h4 style="margin-bottom: 12px;">Pasul 5: Estimare Configurație</h4>
+            <div class="quote-summary-box">
+              <div class="summary-row"><span>Serviciu:</span><span id="pcSummaryService" style="font-weight:600;"></span></div>
+              <div id="pcSummaryItems"></div>
+              <div class="summary-row total"><span>Total estimat:</span><span id="pcSummaryTotal" class="summary-val highlight"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; margin-top:24px;">
+          <button class="btn btn-secondary quote-prev" style="visibility:hidden;"><i class="fas fa-chevron-left"></i> Înapoi</button>
+          <button class="btn btn-primary quote-next">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

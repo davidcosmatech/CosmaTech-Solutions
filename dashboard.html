@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard | CosmaTech Solutions</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Manage your account, project quotes, and IT service inquiries in the CosmaTech Solutions Client Portal.">
+  <meta name="keywords" content="dashboard, client portal, CosmaTech Solutions, IT repairs, web design">
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Dashboard specific layout override styles */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 20px 60px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .profile-card {
+      height: fit-content;
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent-light);
+      margin: 0 auto 16px;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .profile-details-form {
+      margin-top: 24px;
+      border-top: 1px solid var(--border-glass);
+      padding-top: 24px;
+    }
+
+    .quote-history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .quote-card {
+      background: rgba(15, 23, 42, 0.25);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--border-radius-sm);
+      padding: 20px;
+      transition: all var(--transition-fast);
+    }
+
+    .quote-card:hover {
+      border-color: var(--border-glass-hover);
+      background: rgba(15, 23, 42, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .quote-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .quote-type {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .quote-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .quote-details-list {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .quote-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .quote-status-badge {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: #FBBF24;
+    }
+
+    .quote-price-tag {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent-light);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body data-auth-page="true">
+
+  <!-- Background Glow -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Simplified Dashboard Navbar -->
+  <header id="navbar" class="navbar" style="position: fixed; width: 100%; top: 0; left: 0; z-index: 1000;">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="images/cosmatech logo.png" alt="CosmaTech Solutions" class="logo-img">
+      </a>
+
+      <!-- Quick Nav and Actions -->
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <span style="font-size: 0.9rem; color: var(--text-secondary); display: block;" class="welcome-label">
+          Welcome, <strong id="navUserName" style="color: #FFFFFF;">User</strong>
+        </span>
+        <button id="logoutBtn" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <div class="dashboard-container">
+    
+    <!-- Title Section -->
+    <div style="margin-bottom: 24px;">
+      <span class="badge" style="color: var(--accent-light); font-weight: 700; margin-bottom: 8px;">
+        CLIENT PORTAL
+      </span>
+      <h1 class="text-gradient" style="font-size: 2.2rem;">My Dashboard</h1>
+    </div>
+
+    <!-- Alert Messages -->
+    <div class="auth-alert auth-alert-success" id="successAlert" style="margin-bottom: 24px;">
+      <i class="fas fa-check-circle"></i>
+      <span id="successMessage">Profile updated successfully!</span>
+    </div>
+
+    <div class="auth-alert auth-alert-danger" id="errorAlert" style="margin-bottom: 24px;">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="errorMessage">An error occurred.</span>
+    </div>
+
+    <!-- Dashboard Content Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Profile Card -->
+      <div class="glass-card profile-card">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        
+        <h3 id="profileCardName" style="text-align: center; font-size: 1.25rem;">John Doe</h3>
+        <p id="profileCardEmail" style="text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">john@example.com</p>
+
+        <!-- Edit Profile Details Form -->
+        <form id="profileUpdateForm" class="profile-details-form">
+          <h4 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; color: #FFFFFF;">
+            Update Profile
+          </h4>
+          
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" class="form-control" placeholder="John Doe" required style="padding: 10px 12px; font-size: 0.9rem;">
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" placeholder="07123 456789" required style="padding: 10px 12px; font-size: 0.9rem;">
+          </div>
+
+          <button type="submit" class="btn btn-secondary" id="saveProfileBtn" style="width: 100%; padding: 10px; font-size: 0.85rem; justify-content: center; margin-top: 8px;">
+            Save Changes <i class="fas fa-save" style="margin-left: 6px;"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right Column: Quotes History -->
+      <div class="glass-card">
+        <h3 style="font-size: 1.4rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 16px;">
+          <span>Quote Request History</span>
+          <span style="font-size: 0.8rem; background: var(--accent-glow); color: var(--accent-light); padding: 4px 10px; border-radius: 12px; font-weight: 500;" id="quoteCountBadge">0 Total</span>
+        </h3>
+
+        <!-- Quote History List Wrapper -->
+        <div id="quotesContainer" class="quote-history-list">
+          <!-- Quote history items will be dynamically injected here -->
+        </div>
+
+        <div style="margin-top: 24px; text-align: right;">
+          <a href="services.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">
+            Request a New Quote <i class="fas fa-plus" style="margin-left: 6px;"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Shared Auth Engine script -->
+  <script src="js/auth.js"></script>
+
+  <!-- Dashboard Integration Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Secure page check: Redirect immediately if session doesn't exist
+      if (!window.LocalDatabase) {
+        alert('Database layer not loaded. Redirecting to home.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const currentUser = window.LocalDatabase.getCurrentUser();
+      if (!currentUser) {
+        window.location.href = 'signin.html';
+        return;
+      }
+
+      // UI Element Bindings
+      const navUserName = document.getElementById('navUserName');
+      const profileCardName = document.getElementById('profileCardName');
+      const profileCardEmail = document.getElementById('profileCardEmail');
+      const fullNameInput = document.getElementById('fullName');
+      const phoneInput = document.getElementById('phone');
+      const profileUpdateForm = document.getElementById('profileUpdateForm');
+      const saveProfileBtn = document.getElementById('saveProfileBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const quotesContainer = document.getElementById('quotesContainer');
+      const quoteCountBadge = document.getElementById('quoteCountBadge');
+      const successAlert = document.getElementById('successAlert');
+      const successMessage = document.getElementById('successMessage');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+
+      // Populate user data
+      function populateUserData() {
+        const user = window.LocalDatabase.getCurrentUser();
+        if (!user) return;
+        
+        const firstName = user.name.split(' ')[0];
+        navUserName.innerText = firstName;
+        profileCardName.innerText = user.name;
+        profileCardEmail.innerText = user.email;
+        fullNameInput.value = user.name;
+        phoneInput.value = user.phone;
+
+        renderQuotes(user.quotes || []);
+      }
+
+      // Render quote list helper
+      function renderQuotes(quotes) {
+        quoteCountBadge.innerText = `${quotes.length} Total`;
+
+        if (quotes.length === 0) {
+          quotesContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="far fa-folder-open"></i>
+              <h4>No quote requests found</h4>
+              <p>When you submit a quote request from the Services page, it will display here.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Generate quotes markup (newest first)
+        quotesContainer.innerHTML = quotes.map((q) => {
+          const dateStr = new Date(q.date).toLocaleString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const detailsHTML = q.details && q.details.length > 0
+            ? q.details.map(item => `• ${item}`).join('<br>')
+            : 'No options selected';
+
+          return `
+            <div class="quote-card animate-on-scroll show">
+              <div class="quote-header">
+                <div>
+                  <span class="quote-type">${q.type}</span>
+                  <div class="quote-date" style="margin-top: 4px;">Submitted: ${dateStr}</div>
+                </div>
+                <span class="quote-status-badge status-pending">
+                  <i class="far fa-clock"></i> Pending
+                </span>
+              </div>
+              <div class="quote-details-list">
+                ${detailsHTML}
+              </div>
+              <div class="quote-footer">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Estimates are subject to full inspection</span>
+                <span class="quote-price-tag">${q.price}</span>
+              </div>
+            </div>
+          `;
+        }).reverse().join('');
+      }
+
+      // Notification helpers
+      function showSuccess(msg) {
+        successMessage.innerText = msg;
+        successAlert.style.display = 'flex';
+        errorAlert.style.display = 'none';
+        
+        setTimeout(() => {
+          successAlert.style.display = 'none';
+        }, 5000);
+      }
+
+      function showError(msg) {
+        errorMessage.innerText = msg;
+        errorAlert.style.display = 'flex';
+        successAlert.style.display = 'none';
+      }
+
+      // Handle Profile Updates
+      profileUpdateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const nameVal = fullNameInput.value.trim();
+        const phoneVal = phoneInput.value.trim();
+
+        if (!nameVal) {
+          showError('Full Name is required.');
+          fullNameInput.focus();
+          return;
+        }
+
+        if (!phoneVal) {
+          showError('Phone Number is required.');
+          phoneInput.focus();
+          return;
+        }
+
+        saveProfileBtn.classList.add('btn-loading');
+        saveProfileBtn.disabled = true;
+
+        setTimeout(() => {
+          try {
+            window.LocalDatabase.updateUserProfile(nameVal, phoneVal);
+            saveProfileBtn.classList.remove('btn-loading');
+            saveProfileBtn.disabled = false;
+            
+            showSuccess('Profile updated successfully!');
+            populateUserData();
+          } catch (err) {
+            saveProfileBtn.classList.remove('btn-loading');
+            saveProfileBtn.disabled = false;
+            showError(err.message);
+          }
+        }, 600);
+      });
+
+      // Handle Logout
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Clear local database session
+        window.LocalDatabase.clearSession();
+        
+        // Redirect to homepage
+        window.location.href = 'index.html';
+      });
+
+      // Initialize
+      populateUserData();
+
+      // Interactive radial mouse glow inside glass-cards
+      document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
