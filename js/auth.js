@@ -283,49 +283,24 @@ function initAuth() {
     // ==========================================
     function updateNavbar() {
       const currentUser = LocalDatabase.getCurrentUser();
-      const actions = document.querySelector('.navbar-actions');
       const navLinks = document.getElementById('navLinks');
 
-      if (!actions) return;
+      if (!navLinks) return;
 
       const basePrefix = window.location.pathname.includes('/ro/') ? '../' : '';
 
-      // Desktop Navbar Auth Buttons
-      let authWrapper = document.getElementById('navbarAuthWrapper');
-      if (!authWrapper) {
-        authWrapper = document.createElement('div');
-        authWrapper.id = 'navbarAuthWrapper';
-        authWrapper.style.display = 'flex';
-        authWrapper.style.alignItems = 'center';
-        actions.insertBefore(authWrapper, actions.firstChild);
-      }
-
-      // Mobile Navbar Auth Buttons
-      let mobileAuthWrapper = document.getElementById('mobileAuthWrapper');
-      if (navLinks && !mobileAuthWrapper) {
-        mobileAuthWrapper = document.createElement('div');
-        mobileAuthWrapper.id = 'mobileAuthWrapper';
-        mobileAuthWrapper.className = 'mobile-auth-wrapper';
-        mobileAuthWrapper.style.width = '100%';
-        mobileAuthWrapper.style.borderTop = '1px solid var(--border-glass)';
-        mobileAuthWrapper.style.marginTop = '15px';
-        mobileAuthWrapper.style.paddingTop = '15px';
-        mobileAuthWrapper.style.display = 'flex';
-        mobileAuthWrapper.style.flexDirection = 'column';
-        mobileAuthWrapper.style.gap = '10px';
-
-        const mobileBtn = navLinks.querySelector('.navbar-btn-mobile');
-        if (mobileBtn) {
-          navLinks.insertBefore(mobileAuthWrapper, mobileBtn);
-        } else {
-          navLinks.appendChild(mobileAuthWrapper);
-        }
-      }
+      // Remove existing dynamic auth items
+      const existingAuthItems = navLinks.querySelectorAll('.dynamic-auth-item');
+      existingAuthItems.forEach(item => item.remove());
 
       if (currentUser) {
-        // Logged In Desktop navbar
-        authWrapper.innerHTML = `
-          <div class="user-dropdown" style="position: relative; margin-right: 15px;">
+        // Logged In:
+        // 1. Desktop dropdown (hidden on mobile via CSS)
+        const dropdownLi = document.createElement('li');
+        dropdownLi.className = 'dynamic-auth-item desktop-only user-dropdown-li';
+        dropdownLi.style.position = 'relative';
+        dropdownLi.innerHTML = `
+          <div class="user-dropdown" style="position: relative;">
             <a href="#" id="userDropdownBtn" style="font-weight:600; font-size:0.9rem; color:#FFFFFF; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding: 6px 0;">
               <i class="fas fa-user-circle" style="font-size:1.2rem; color:var(--accent-light);"></i> 
               <span>Hi, ${currentUser.name.split(' ')[0]}</span>
@@ -338,15 +313,45 @@ function initAuth() {
           </div>
         `;
 
-        // Logged In Mobile sidebar
-        if (mobileAuthWrapper) {
-          mobileAuthWrapper.innerHTML = `
-            <div style="font-weight:600; font-size:0.95rem; color:#FFFFFF; padding: 10px 0; border-bottom: 1px solid var(--border-glass); margin-bottom: 10px; display:flex; align-items:center; gap:8px;">
-              <i class="fas fa-user-circle" style="color:var(--accent-light); font-size:1.2rem;"></i> ${isRo ? 'Salut' : 'Hi'}, ${currentUser.name.split(' ')[0]}!
-            </div>
-            <a href="#" class="mobile-profile-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 8px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-columns"></i> ${isRo ? 'Profilul Meu' : 'My Profile'}</a>
-            <a href="#" class="mobile-logout-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 8px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-sign-out-alt"></i> ${isRo ? 'Deconectare' : 'Logout'}</a>
-          `;
+        // 2. Mobile menu header (hidden on desktop via CSS)
+        const mobileProfileLi = document.createElement('li');
+        mobileProfileLi.className = 'dynamic-auth-item mobile-only';
+        mobileProfileLi.style.width = '100%';
+        mobileProfileLi.style.borderTop = '1px solid var(--border-glass)';
+        mobileProfileLi.style.marginTop = '15px';
+        mobileProfileLi.style.paddingTop = '15px';
+        mobileProfileLi.innerHTML = `
+          <div style="font-weight:600; font-size:0.95rem; color:#FFFFFF; padding: 5px 0; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-user-circle" style="color:var(--accent-light); font-size:1.2rem;"></i> ${isRo ? 'Salut' : 'Hi'}, ${currentUser.name.split(' ')[0]}!
+          </div>
+        `;
+
+        // 3. Mobile Profile Link
+        const mobileProfileLinkLi = document.createElement('li');
+        mobileProfileLinkLi.className = 'dynamic-auth-item mobile-only';
+        mobileProfileLinkLi.innerHTML = `
+          <a href="#" class="mobile-profile-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 8px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-columns"></i> ${isRo ? 'Profilul Meu' : 'My Profile'}</a>
+        `;
+
+        // 4. Mobile Logout Link
+        const mobileLogoutLi = document.createElement('li');
+        mobileLogoutLi.className = 'dynamic-auth-item mobile-only';
+        mobileLogoutLi.innerHTML = `
+          <a href="#" class="mobile-logout-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 8px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-sign-out-alt"></i> ${isRo ? 'Deconectare' : 'Logout'}</a>
+        `;
+
+        // Insert them before the mobile Request Quote button
+        const mobileBtn = navLinks.querySelector('.navbar-btn-mobile');
+        if (mobileBtn) {
+          navLinks.insertBefore(dropdownLi, mobileBtn);
+          navLinks.insertBefore(mobileProfileLi, mobileBtn);
+          navLinks.insertBefore(mobileProfileLinkLi, mobileBtn);
+          navLinks.insertBefore(mobileLogoutLi, mobileBtn);
+        } else {
+          navLinks.appendChild(dropdownLi);
+          navLinks.appendChild(mobileProfileLi);
+          navLinks.appendChild(mobileProfileLinkLi);
+          navLinks.appendChild(mobileLogoutLi);
         }
 
         // Add Dropdown toggle events
@@ -360,10 +365,10 @@ function initAuth() {
             dropMenu.style.display = isDisplayed ? 'none' : 'flex';
             dropBtn.querySelector('.fa-chevron-down').style.transform = isDisplayed ? 'rotate(0)' : 'rotate(180deg)';
           });
-
+          
           document.addEventListener('click', () => {
-            dropMenu.style.display = 'none';
-            const icon = dropBtn.querySelector('.fa-chevron-down');
+            if (dropMenu) dropMenu.style.display = 'none';
+            const icon = dropBtn ? dropBtn.querySelector('.fa-chevron-down') : null;
             if (icon) icon.style.transform = 'rotate(0)';
           });
         }
@@ -375,27 +380,36 @@ function initAuth() {
         const logBtn = document.getElementById('logoutBtn');
         if (logBtn) logBtn.addEventListener('click', handleLogout);
 
-        if (mobileAuthWrapper) {
-          const mobProf = mobileAuthWrapper.querySelector('.mobile-profile-trigger');
-          if (mobProf) mobProf.addEventListener('click', (e) => { e.preventDefault(); openProfileModal(); });
+        const mobProf = navLinks.querySelector('.mobile-profile-trigger');
+        if (mobProf) mobProf.addEventListener('click', (e) => { e.preventDefault(); openProfileModal(); });
 
-          const mobLog = mobileAuthWrapper.querySelector('.mobile-logout-trigger');
-          if (mobLog) mobLog.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
-        }
+        const mobLog = navLinks.querySelector('.mobile-logout-trigger');
+        if (mobLog) mobLog.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
 
       } else {
-        // Logged Out Desktop navbar
-        authWrapper.innerHTML = `
-          <a href="${basePrefix}signin.html" id="navLoginBtn" style="font-weight:600; font-size:0.9rem; color:var(--text-secondary); margin-right:20px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
-          <a href="${basePrefix}signup.html" class="btn btn-secondary" id="navSignupBtn" style="padding:8px 16px; font-size:0.85rem; margin-right:15px; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
+        // Logged Out:
+        // Desktop / Mobile Sign In (class nav-login-link style)
+        const loginLi = document.createElement('li');
+        loginLi.className = 'dynamic-auth-item';
+        loginLi.innerHTML = `
+          <a href="${basePrefix}signin.html" id="navLoginBtn" style="font-weight:600; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
         `;
 
-        // Logged Out Mobile sidebar
-        if (mobileAuthWrapper) {
-          mobileAuthWrapper.innerHTML = `
-            <a href="${basePrefix}signin.html" class="mobile-login-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-sign-in-alt"></i> ${isRo ? 'Autentificare' : 'Login'}</a>
-            <a href="${basePrefix}signup.html" class="mobile-signup-trigger" style="font-weight:600; font-size:0.95rem; color:var(--text-secondary); padding: 10px 0; display:flex; align-items:center; gap:8px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
-          `;
+        // Desktop / Mobile Sign Up (blue button style!)
+        const signupLi = document.createElement('li');
+        signupLi.className = 'dynamic-auth-item';
+        signupLi.innerHTML = `
+          <a href="${basePrefix}signup.html" class="btn btn-primary" id="navSignupBtn" style="padding:8px 16px; font-size:0.85rem; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-user-plus"></i> ${isRo ? 'Înregistrare' : 'Sign Up'}</a>
+        `;
+
+        // Insert them before the mobile Request Quote button
+        const mobileBtn = navLinks.querySelector('.navbar-btn-mobile');
+        if (mobileBtn) {
+          navLinks.insertBefore(loginLi, mobileBtn);
+          navLinks.insertBefore(signupLi, mobileBtn);
+        } else {
+          navLinks.appendChild(loginLi);
+          navLinks.appendChild(signupLi);
         }
       }
     }
