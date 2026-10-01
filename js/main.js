@@ -108,10 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStep = 0;
 
     function updateStep() {
-      // Toggle active step
+      // Toggle active step and replay fade-in
       steps.forEach((step, idx) => {
         step.classList.remove('active');
         if (idx === currentStep) {
+          void step.offsetWidth;
           step.classList.add('active');
         }
       });

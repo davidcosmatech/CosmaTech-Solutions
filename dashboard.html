@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" href="images/favicon.png">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=1.4">
+  <link rel="stylesheet" href="css/style.css?v=1.5">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -75,17 +75,20 @@
     }
 
     .quote-card {
-      background: rgba(15, 23, 42, 0.25);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--border-radius-sm);
-      padding: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(15, 23, 42, 0.4) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(59, 130, 246, 0.06);
+      animation: quoteFadeIn 0.55s ease forwards;
       transition: all var(--transition-fast);
     }
 
     .quote-card:hover {
       border-color: var(--border-glass-hover);
-      background: rgba(15, 23, 42, 0.4);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(15, 23, 42, 0.5) 100%);
       transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 24px rgba(37, 99, 235, 0.08);
     }
 
     .quote-header {
@@ -307,17 +310,11 @@
       const errorAlert = document.getElementById('errorAlert');
       const errorMessage = document.getElementById('errorMessage');
 
-      // Load local quotes helper
-      function getUserQuotes(email) {
-        const quotes = localStorage.getItem('cosmatech_quotes_' + email.toLowerCase());
-        return quotes ? JSON.parse(quotes) : [];
-      }
-
       // Populate user data
-      function populateUserData(user) {
+  function populateUserData(user, profile = null) {
         const meta = user.user_metadata || {};
-        const fullName = meta.full_name || 'Client';
-        const phone = meta.phone || '';
+    const fullName = profile?.full_name || meta.full_name || 'Client';
+    const phone = profile?.phone || meta.phone || '';
         const email = user.email;
 
         const firstName = fullName.split(' ')[0];
@@ -327,10 +324,20 @@
         if (fullNameInput) fullNameInput.value = fullName;
         if (phoneInput) phoneInput.value = phone;
 
-        // Load and render quotes
-        const quotes = getUserQuotes(email);
-        renderQuotes(quotes);
+    const legacyQuotes = localStorage.getItem('cosmatech_quotes_' + email.toLowerCase());
+    renderQuotes(legacyQuotes ? JSON.parse(legacyQuotes) : []);
       }
+
+  async function loadCustomerProfile(user) {
+    const { data, error } = await supabaseClient
+      .from('customer_profiles')
+      .select('full_name, phone')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  }
 
       // Render quote list helper
       function renderQuotes(quotes) {
@@ -433,7 +440,7 @@
           saveProfileBtn.disabled = true;
 
           try {
-            const { data, error } = await supabaseClient.auth.updateUser({
+        const { data, error } = await supabaseClient.auth.updateUser({
               data: {
                 full_name: nameVal,
                 phone: phoneVal
@@ -442,11 +449,20 @@
 
             if (error) throw error;
 
+        const { data: profile, error: profileError } = await supabaseClient
+          .from('customer_profiles')
+          .update({ full_name: nameVal, phone: phoneVal, updated_at: new Date().toISOString() })
+          .eq('id', session.user.id)
+          .select('full_name, phone')
+          .single();
+
+        if (profileError) throw profileError;
+
             saveProfileBtn.classList.remove('btn-loading');
             saveProfileBtn.disabled = false;
             
             showSuccess('Profile updated successfully!');
-            populateUserData(data.user);
+        populateUserData(data.user, profile);
           } catch (err) {
             saveProfileBtn.classList.remove('btn-loading');
             saveProfileBtn.disabled = false;
@@ -469,8 +485,14 @@
         });
       }
 
-      // Initialize view
-      populateUserData(session.user);
+  // Load the durable customer profile from Supabase.
+  try {
+    const profile = await loadCustomerProfile(session.user);
+    populateUserData(session.user, profile);
+  } catch (err) {
+    showError('Could not load your customer profile. Please run supabase/schema.sql in your Supabase project, then reload this page.');
+    populateUserData(session.user);
+  }
 
       // Interactive radial mouse glow inside glass-cards
       document.querySelectorAll('.glass-card').forEach(card => {
