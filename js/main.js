@@ -315,49 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.querySelector('#webSummaryItems').innerHTML = items.map(i => `<div class="summary-row"><span>${i}</span></div>`).join('');
   }
 
-  // 5b. Repairs Modal Calculator
-  function calculateRepairsPrice(modal) {
-    const device = modal.querySelector('#repairDeviceInput').value;
-    const type = modal.querySelector('#repairTypeInput').value;
-    const brand = modal.querySelector('.quote-brand').value.trim() || (isRo ? 'Generic' : 'Generic');
-
-    let base = 25;
-    let typeText = isRo ? 'Diagnosticare Standard' : 'Standard Diagnostics';
-    
-    if (type === 'clean') {
-      base = 40;
-      typeText = isRo ? 'Curățare Completă & Aplicare Pastă Termică' : 'Full Cleaning & Thermal Paste Application';
-    } else if (type === 'upgrade') {
-      base = 50;
-      typeText = isRo ? 'Upgrade Hardware (SSD/RAM)' : 'Hardware Upgrade (SSD/RAM)';
-    } else if (type === 'screen') {
-      base = 80;
-      typeText = isRo ? 'Înlocuire Display / Panou Ecran' : 'Display / Screen Replacement';
-    } else if (type === 'virus') {
-      base = 40;
-      typeText = isRo ? 'Devirusare & Optimizare Software' : 'Virus Removal & Software Optimization';
-    }
-
-    const deviceMap = isRo ? { laptop: 'Laptop', desktop: 'Desktop PC', macbook: 'Apple MacBook', console: 'Consolă Gaming' }
-                           : { laptop: 'Laptop', desktop: 'Desktop PC', macbook: 'Apple MacBook', console: 'Gaming Console' };
-    const deviceText = deviceMap[device] || (isRo ? 'Echipament' : 'Device');
-
-    const items = isRo ? [
-      `Diagnosticare tip dispozitiv: ${deviceText}`,
-      `Serviciu ales: ${typeText}`,
-      `Model/Brand indicat: ${brand}`
-    ] : [
-      `Device type diagnostics: ${deviceText}`,
-      `Selected service: ${typeText}`,
-      `Model/Brand specified: ${brand}`
-    ];
-
-    modal.querySelector('#repairSummaryService').textContent = isRo ? 'Reparații IT' : 'IT Repairs';
-    modal.querySelector('#repairSummaryTotal').textContent = `£${base}`;
-    modal.querySelector('#repairSummaryItems').innerHTML = items.map(i => `<div class="summary-row"><span>${i}</span></div>`).join('');
-  }
-
-  // 5c. Hosting Modal Calculator
+  // 5b. Hosting Modal Calculator
   function calculateHostingPrice(modal) {
     const plan = modal.querySelector('#hostPlanInput').value;
     const domain = modal.querySelector('#hostDomainInput').value;
@@ -408,61 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.querySelector('#hostSummaryItems').innerHTML = items.map(i => `<div class="summary-row"><span>${i}</span></div>`).join('');
   }
 
-  // 5d. Custom PC Modal Calculator
-  function calculatePcbuildPrice(modal) {
-    const usage = modal.querySelector('#pcUsageInput').value;
-    const budget = modal.querySelector('#pcBudgetInput').value;
-    const options = modal.querySelector('#pcOptionsInput').value;
-
-    let base = 899;
-    let budgetText = isRo ? 'Configurație Performance Gaming' : 'Performance Gaming Configuration';
-
-    if (budget === 'office') {
-      base = 349;
-      budgetText = isRo ? 'Configurație PC Office / Workstation' : 'Office PC / Workstation Configuration';
-    } else if (budget === 'starter') {
-      base = 499;
-      budgetText = isRo ? 'Configurație PC Starter Gaming' : 'Starter Gaming PC Configuration';
-    } else if (budget === 'ultimate') {
-      base = 1499;
-      budgetText = isRo ? 'Configurație PC Ultimate Liquid-Cooled' : 'Ultimate Liquid-Cooled PC Configuration';
-    }
-
-    let usageText = isRo ? 'Gaming / Editare Video' : 'Gaming / Video Editing';
-    if (usage === 'work') {
-      usageText = isRo ? 'Muncă de birou / Studiu' : 'Office work / Study';
-    } else if (usage === 'streaming') {
-      usageText = isRo ? 'Editare Video, Randare & Streaming' : 'Video Editing, Rendering & Streaming';
-    }
-
-    let optionCost = 0;
-    let optionText = isRo ? 'Răcire pe Aer (Inclusă)' : 'Air Cooling (Included)';
-
-    if (options === 'water') {
-      optionCost = 150;
-      optionText = isRo ? 'Răcire Lichidă Custom Loop (+£150)' : 'Liquid Cooling Custom Loop (+£150)';
-    }
-
-    const items = [
-      `${budgetText} - £${base}`,
-      isRo ? `Optimizare scop: ${usageText}` : `Purpose optimization: ${usageText}`,
-      optionText
-    ];
-
-    const total = base + optionCost;
-
-    modal.querySelector('#pcSummaryService').textContent = isRo ? 'Asamblare PC' : 'PC Assembly';
-    modal.querySelector('#pcSummaryTotal').textContent = `£${total}`;
-    modal.querySelector('#pcSummaryItems').innerHTML = items.map(i => `<div class="summary-row"><span>${i}</span></div>`).join('');
-  }
-
   // ==========================================
   // 6. Init Wizards
   // ==========================================
   setupWizard('webdevModal', calculateWebdevPrice, 5);
-  setupWizard('repairModal', calculateRepairsPrice, 5);
   setupWizard('hostingModal', calculateHostingPrice, 5);
-  setupWizard('pcbuildModal', calculatePcbuildPrice, 5);
 
   // ==========================================
   // 7. Modal Managers (Open & Close Events)
@@ -504,40 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Repair triggers
-  document.querySelectorAll('.btn-quote-repair').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeAllModals();
-      const modal = document.getElementById('repairModal');
-      if (modal) {
-        modal.resetWizard();
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  });
-
   // Hosting triggers
   document.querySelectorAll('.btn-quote-hosting').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       closeAllModals();
       const modal = document.getElementById('hostingModal');
-      if (modal) {
-        modal.resetWizard();
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  });
-
-  // Custom PC triggers
-  document.querySelectorAll('.btn-quote-pcbuild').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeAllModals();
-      const modal = document.getElementById('pcbuildModal');
       if (modal) {
         modal.resetWizard();
         modal.classList.add('show');
@@ -590,20 +470,10 @@ document.addEventListener('DOMContentLoaded', () => {
       totalPrice = modal.querySelector('#webSummaryTotal') ? modal.querySelector('#webSummaryTotal').textContent : '';
       const items = modal.querySelectorAll('#webSummaryItems .summary-row span');
       items.forEach(el => detailsList.push(el.textContent));
-    } else if (id === 'repairModal') {
-      serviceType = modal.querySelector('#repairSummaryService') ? modal.querySelector('#repairSummaryService').textContent : 'IT Repairs';
-      totalPrice = modal.querySelector('#repairSummaryTotal') ? modal.querySelector('#repairSummaryTotal').textContent : '';
-      const items = modal.querySelectorAll('#repairSummaryItems .summary-row span');
-      items.forEach(el => detailsList.push(el.textContent));
     } else if (id === 'hostingModal') {
       serviceType = modal.querySelector('#hostSummaryService') ? modal.querySelector('#hostSummaryService').textContent : 'Hosting';
       totalPrice = modal.querySelector('#hostSummaryTotal') ? modal.querySelector('#hostSummaryTotal').textContent : '';
       const items = modal.querySelectorAll('#hostSummaryItems .summary-row span');
-      items.forEach(el => detailsList.push(el.textContent));
-    } else if (id === 'pcbuildModal') {
-      serviceType = modal.querySelector('#pcSummaryService') ? modal.querySelector('#pcSummaryService').textContent : 'PC Build';
-      totalPrice = modal.querySelector('#pcSummaryTotal') ? modal.querySelector('#pcSummaryTotal').textContent : '';
-      const items = modal.querySelectorAll('#pcSummaryItems .summary-row span');
       items.forEach(el => detailsList.push(el.textContent));
     }
 

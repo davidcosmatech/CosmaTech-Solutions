@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js?v=1.1"></script>
 
 <body data-auth-page="true">
 
@@ -50,6 +51,10 @@
         <div class="auth-alert auth-alert-danger" id="errorAlert">
           <i class="fas fa-exclamation-circle"></i>
           <span id="errorMessage">Invalid email or password.</span>
+        </div>
+        <div class="auth-alert auth-alert-success" id="successAlert" style="display:none;">
+          <i class="fas fa-check-circle"></i>
+          <span id="successMessage"></span>
         </div>
 
         <!-- Form -->
@@ -89,6 +94,20 @@
 
         </form>
 
+        <form id="resetPasswordForm" novalidate style="display:none; margin-top: 16px;">
+          <div class="form-group">
+            <label for="newPassword">New password *</label>
+            <input type="password" id="newPassword" class="form-control" minlength="8" required autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="confirmNewPassword">Confirm new password *</label>
+            <input type="password" id="confirmNewPassword" class="form-control" minlength="8" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-primary" id="resetPasswordSubmit" style="width:100%; justify-content:center;">
+            Update Password
+          </button>
+        </form>
+
         <!-- Redirect Link -->
         <div class="auth-footer-text">
           Don't have an account? <a href="signup.html">Create one here</a>
@@ -100,27 +119,70 @@
 
   <!-- Embedded Supabase Configuration & Sign In Logic -->
   <script>
-    const SUPABASE_URL = "https://kzfwfdfibmhyqhxavjlr.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_QzKXt3FbsSfuM1s5n_AwZg_J3sdzgGa";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseClient = window.supabaseClient;
 
     document.addEventListener('DOMContentLoaded', async () => {
       // Check if user is already authenticated and redirect to dashboard
       const { data: { session } } = await supabaseClient.auth.getSession();
-      if (session) {
+      const params = new URLSearchParams(window.location.search);
+      const isPasswordRecovery = params.get('recovery') === '1';
+      const signInForm = document.getElementById('signInForm');
+      const resetPasswordForm = document.getElementById('resetPasswordForm');
+      if (session && !isPasswordRecovery) {
         window.location.href = 'dashboard.html';
         return;
       }
 
-      const signInForm = document.getElementById('signInForm');
+      if (isPasswordRecovery) {
+        signInForm.style.display = 'none';
+        resetPasswordForm.style.display = 'block';
+      }
+
       const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const passwordToggle = document.getElementById('passwordToggle');
       const toggleIcon = document.getElementById('toggleIcon');
       const errorAlert = document.getElementById('errorAlert');
       const errorMessage = document.getElementById('errorMessage');
+      const successAlert = document.getElementById('successAlert');
+      const successMessage = document.getElementById('successMessage');
+      const resetPasswordSubmit = document.getElementById('resetPasswordSubmit');
       const submitBtn = document.getElementById('submitBtn');
       const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+
+      if (params.get('confirmed') === '1') {
+        successMessage.textContent = 'Your email is confirmed. You can now sign in.';
+        successAlert.style.display = 'flex';
+      } else if (params.get('check-email') === '1') {
+        successMessage.textContent = 'Account created. Check your email for the confirmation link before signing in.';
+        successAlert.style.display = 'flex';
+      }
+
+      resetPasswordForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+        if (newPassword.length < 8) {
+          showError('Password must be at least 8 characters long.');
+          return;
+        }
+        if (newPassword !== confirmNewPassword) {
+          showError('Passwords do not match.');
+          return;
+        }
+
+        resetPasswordSubmit.disabled = true;
+        resetPasswordSubmit.classList.add('btn-loading');
+        try {
+          const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+          if (error) throw error;
+          window.location.href = 'dashboard.html';
+        } catch (err) {
+          showError(err.message);
+          resetPasswordSubmit.disabled = false;
+          resetPasswordSubmit.classList.remove('btn-loading');
+        }
+      });
 
       // Toggle Password Visibility
       if (passwordToggle) {
@@ -166,7 +228,7 @@
 
           try {
             const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-              redirectTo: window.location.origin + '/signin.html',
+              redirectTo: window.getSupabaseRedirectUrl('signin.html?recovery=1'),
             });
             if (error) throw error;
             alert('Password recovery link has been sent to your email.');

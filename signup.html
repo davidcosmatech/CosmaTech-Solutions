@@ -8,7 +8,7 @@
 
   <!-- SEO Meta Tags -->
   <meta name="description"
-    content="Join CosmaTech Solutions. Register an account to submit quote requests, check repair status, and manage domain hosting services.">
+    content="Join CosmaTech Solutions. Register an account to submit quote requests, track website project quotes, and manage hosting services.">
   <meta name="keywords" content="sign up, register, CosmaTech Solutions, client registration">
 
   <link rel="icon" type="image/png" href="images/favicon.png">
@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js?v=1.1"></script>
 
 <body data-auth-page="true">
 
@@ -133,9 +134,7 @@
 
   <!-- Embedded Supabase Configuration & Sign Up Logic -->
   <script>
-    const SUPABASE_URL = "https://kzfwfdfibmhyqhxavjlr.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_QzKXt3FbsSfuM1s5n_AwZg_J3sdzgGa";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseClient = window.supabaseClient;
 
     document.addEventListener('DOMContentLoaded', async () => {
       // Check if user is already authenticated and redirect to dashboard
@@ -286,6 +285,7 @@
               email,
               password,
               options: {
+                emailRedirectTo: window.getSupabaseRedirectUrl('signin.html?confirmed=1'),
                 data: {
                   full_name: fullName,
                   phone: phone
@@ -301,8 +301,7 @@
             if (data.session) {
               window.location.href = 'dashboard.html';
             } else {
-              alert('Account created! Please check your email for the confirmation link to activate your account.');
-              window.location.href = 'signin.html';
+              window.location.href = 'signin.html?check-email=1';
             }
 
           } catch (err) {

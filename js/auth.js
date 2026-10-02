@@ -25,21 +25,26 @@ function initAuth() {
     });
   }
 
-  // Initialize Supabase client
-  loadSupabase().then(() => {
-    if (window.supabase) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      // Wire reactive navbar updates to Supabase Auth state changes
-      if (!document.body.hasAttribute('data-auth-page')) {
-        supabaseClient.auth.onAuthStateChange(() => {
-          if (typeof updateNavbar === 'function') {
-            updateNavbar();
-          }
-        });
-      }
+  // Initialize once and make every auth action wait for the SDK and client.
+  const supabaseClientReady = loadSupabase().then(() => {
+    if (!window.supabase?.createClient) {
+      throw new Error('Could not load Supabase. Check your connection and try again.');
     }
+
+    supabaseClient = window.supabaseClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = supabaseClient;
+
+    if (!document.body.hasAttribute('data-auth-page')) {
+      supabaseClient.auth.onAuthStateChange(() => {
+        if (typeof updateNavbar === 'function') updateNavbar();
+      });
+    }
+    return supabaseClient;
   });
+
+  async function getSupabaseClient() {
+    return supabaseClient || await supabaseClientReady;
+  }
 
   // ==========================================
   // 2. Database layer (Supabase client wrapper)
@@ -68,11 +73,17 @@ function initAuth() {
       }
     },
     async registerUser(name, email, password, phone) {
-      if (!supabaseClient) throw new Error('Supabase client not initialized');
-      const { data, error } = await supabaseClient.auth.signUp({
+      const client = await getSupabaseClient();
+      const { data, error } = await client.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: new URL(
+            document.documentElement.lang === 'ro' || window.location.pathname.includes('/ro/')
+              ? '../signin.html?confirmed=1'
+              : 'signin.html?confirmed=1',
+            window.location.href
+          ).toString(),
           data: {
             full_name: name,
             phone: phone
@@ -80,11 +91,11 @@ function initAuth() {
         }
       });
       if (error) throw error;
-      return data.user;
+      return data;
     },
     async loginUser(email, password) {
-      if (!supabaseClient) throw new Error('Supabase client not initialized');
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
+      const client = await getSupabaseClient();
+      const { data, error } = await client.auth.signInWithPassword({
         email,
         password
       });
@@ -92,13 +103,13 @@ function initAuth() {
       return data.user;
     },
     async clearSession() {
-      if (supabaseClient) {
-        await supabaseClient.auth.signOut();
-      }
+      const client = await getSupabaseClient();
+      const { error } = await client.auth.signOut();
+      if (error) throw error;
     },
     async updateUserProfile(name, phone) {
-      if (!supabaseClient) throw new Error('Supabase client not initialized');
-      const { data, error } = await supabaseClient.auth.updateUser({
+      const client = await getSupabaseClient();
+      const { data, error } = await client.auth.updateUser({
         data: {
           full_name: name,
           phone: phone
@@ -425,18 +436,26 @@ function initAuth() {
       const password = document.getElementById('signupPassword').value;
 
       try {
-        await LocalDatabase.registerUser(name, email, password, phone);
+        const { session } = await LocalDatabase.registerUser(name, email, password, phone);
         hideModal(authModal);
-        updateNavbar();
+        if (session) updateNavbar();
 
         // Reset form
         document.getElementById('signupForm').reset();
 
-        showSuccessNotification(
-          isRo ? 'Înregistrare Reușită!' : 'Registration Successful!',
-          isRo ? `Contul tău a fost creat cu succes. Bun venit, <strong>${name}</strong>!`
-            : `Your account has been successfully created. Welcome, <strong>${name}</strong>!`
-        );
+        if (session) {
+          showSuccessNotification(
+            isRo ? 'Înregistrare Reușită!' : 'Registration Successful!',
+            isRo ? `Contul tău a fost creat cu succes. Bun venit, <strong>${name}</strong>!`
+              : `Your account has been created. Welcome, <strong>${name}</strong>!`
+          );
+        } else {
+          showSuccessNotification(
+            isRo ? 'Verifică adresa de email' : 'Check your email',
+            isRo ? 'Contul a fost creat. Deschide linkul de confirmare din email înainte să te conectezi.'
+              : 'Your account has been created. Open the confirmation link in your email before signing in.'
+          );
+        }
       } catch (err) {
         alert(err.message);
       }
@@ -457,22 +476,26 @@ function initAuth() {
 
         showSuccessNotification(
           isRo ? 'Conectare Reușită!' : 'Login Successful!',
-          isRo ? `Te-ai conectat cu succes ca <strong>${user.name}</strong>.`
-            : `You have successfully logged in as <strong>${user.name}</strong>.`
+          isRo ? `Te-ai conectat cu succes ca <strong>${user.user_metadata?.full_name || user.email}</strong>.`
+            : `You have successfully logged in as <strong>${user.user_metadata?.full_name || user.email}</strong>.`
         );
       } catch (err) {
         alert(err.message);
       }
     });
 
-    function handleLogout(e) {
+    async function handleLogout(e) {
       if (e) e.preventDefault();
-      LocalDatabase.clearSession();
-      updateNavbar();
-      showSuccessNotification(
-        isRo ? 'Deconectat!' : 'Logged Out!',
-        isRo ? 'Te-ai deconectat cu succes.' : 'You have been successfully logged out.'
-      );
+      try {
+        await LocalDatabase.clearSession();
+        updateNavbar();
+        showSuccessNotification(
+          isRo ? 'Deconectat!' : 'Logged Out!',
+          isRo ? 'Te-ai deconectat cu succes.' : 'You have been successfully logged out.'
+        );
+      } catch (err) {
+        alert(err.message);
+      }
     }
 
     function openProfileModal() {
@@ -521,13 +544,13 @@ function initAuth() {
     }
 
     // Handle user info update submit
-    document.getElementById('profileUpdateForm').addEventListener('submit', (e) => {
+    document.getElementById('profileUpdateForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('profileName').value;
       const phone = document.getElementById('profilePhone').value;
 
       try {
-        LocalDatabase.updateUserProfile(name, phone);
+        await LocalDatabase.updateUserProfile(name, phone);
         updateNavbar();
         hideModal(profileModal);
         showSuccessNotification(
