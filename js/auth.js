@@ -7,8 +7,7 @@ function initAuth() {
   // ==========================================
   // 1. Supabase Initialization and SDK Loader
   // ==========================================
-  const SUPABASE_URL = "https://kzfwfdfibmhyqhxavjlr.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_QzKXt3FbsSfuM1s5n_AwZg_J3sdzgGa";
+  const supabaseConfig = window.COSMATECH_SUPABASE_CONFIG;
   let supabaseClient = null;
 
   function loadSupabase() {
@@ -34,7 +33,11 @@ function initAuth() {
       throw new Error('Could not load Supabase. Check your connection and try again.');
     }
 
-    supabaseClient = window.supabaseClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (!supabaseConfig?.url || !supabaseConfig?.publishableKey) {
+      throw new Error('Supabase is not configured. Set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in Vercel.');
+    }
+
+    supabaseClient = window.supabaseClient || window.supabase.createClient(supabaseConfig.url, supabaseConfig.publishableKey);
     window.supabaseClient = supabaseClient;
 
     if (!document.body.hasAttribute('data-auth-page')) {

@@ -1,0 +1,7 @@
+{
+  "name": "cosmatech-solutions-website",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js"
+  }
+}
