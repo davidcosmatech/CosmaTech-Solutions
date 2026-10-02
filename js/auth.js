@@ -1,5 +1,8 @@
 function initAuth() {
   const isRo = document.documentElement.lang === 'ro' || window.location.pathname.includes('/ro/');
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[character]);
 
   // ==========================================
   // 1. Supabase Initialization and SDK Loader
@@ -118,14 +121,21 @@ function initAuth() {
       if (error) throw error;
       return data.user;
     },
-    saveQuote(quote) {
-      const currentUser = this.getCurrentUser();
-      if (!currentUser) return;
-      const email = currentUser.email;
-      const key = 'cosmatech_quotes_' + email.toLowerCase();
-      const quotes = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
-      quotes.push(quote);
-      localStorage.setItem(key, JSON.stringify(quotes));
+    async saveQuote(quote) {
+      const client = await getSupabaseClient();
+      const { error } = await client.from('quote_requests').insert({
+        customer_name: quote.name,
+        customer_email: quote.email,
+        customer_phone: quote.phone,
+        service_type: quote.type,
+        estimated_price: quote.price,
+        details: quote.details || [],
+        description: quote.notes || ''
+      });
+
+      if (error) throw error;
+
+      return true;
     }
   };
 
@@ -498,9 +508,31 @@ function initAuth() {
       }
     }
 
-    function openProfileModal() {
+    async function openProfileModal() {
       const currentUser = LocalDatabase.getCurrentUser();
       if (!currentUser) return;
+
+      let quoteHistory = currentUser.quotes || [];
+      try {
+        const client = await getSupabaseClient();
+        const { data: { user } } = await client.auth.getUser();
+        if (user) {
+          const { data, error } = await client.from('quote_requests')
+            .select('service_type, estimated_price, details, status, created_at')
+            .eq('user_id', user.id).order('created_at', { ascending: false });
+          if (!error) {
+            quoteHistory = (data || []).map((quote) => ({
+              type: quote.service_type,
+              price: quote.estimated_price,
+              details: Array.isArray(quote.details) ? quote.details : [],
+              date: quote.created_at,
+              status: quote.status
+            }));
+          }
+        }
+      } catch (error) {
+        console.warn('Could not load saved quote history.', error);
+      }
 
       // Fill profile fields
       document.getElementById('profileName').value = currentUser.name;
@@ -509,7 +541,7 @@ function initAuth() {
 
       // Draw Quote Requests History
       const container = document.getElementById('profileQuotesContainer');
-      const quotes = currentUser.quotes || [];
+      const quotes = quoteHistory;
 
       if (quotes.length === 0) {
         container.innerHTML = `
@@ -524,15 +556,15 @@ function initAuth() {
           return `
             <div class="profile-quote-card" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 14px; margin-bottom: 10px;">
               <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-                <span style="font-weight: 700; color: #FFFFFF; font-size: 0.95rem;">${q.type}</span>
+                <span style="font-weight: 700; color: #FFFFFF; font-size: 0.95rem;">${escapeHtml(q.type)}</span>
                 <span style="font-size: 0.75rem; color: var(--text-muted);">${new Date(q.date).toLocaleString()}</span>
               </div>
               <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">
-                ${q.details.map(item => `• ${item}`).join('<br>')}
+                ${q.details.map(item => `• ${escapeHtml(item)}`).join('<br>')}
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 8px;">
-                <span style="font-size: 0.8rem; color: var(--text-muted);">${isRo ? 'Status: În curs' : 'Status: Pending'}</span>
-                <span style="font-weight: 800; color: var(--accent-light); font-size: 1.1rem;">${q.price}</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Status: ${escapeHtml(q.status || 'New')}</span>
+                <span style="font-weight: 800; color: var(--accent-light); font-size: 1.1rem;">${escapeHtml(q.price)}</span>
               </div>
             </div>
           `;

@@ -166,7 +166,7 @@
   </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js?v=1.1"></script>
+<script src="js/supabase.js?v=1.2"></script>
 
 <body data-auth-page="true">
 
@@ -183,6 +183,8 @@
 
       <!-- Quick Nav and Actions -->
       <div style="display: flex; align-items: center; gap: 20px;">
+        <a href="admin.html" id="adminPanelShortcut" class="btn btn-secondary"
+          style="padding:8px 14px;font-size:.82rem;display:none;">Admin panel</a>
         <span style="font-size: 0.9rem; color: var(--text-secondary); display: block;" class="welcome-label">
           Welcome, <strong id="navUserName" style="color: #FFFFFF;">User</strong>
         </span>
@@ -293,6 +295,11 @@
         return;
       }
 
+      const adminPanelShortcut = document.getElementById('adminPanelShortcut');
+      const { data: adminMembership } = await supabaseClient.from('admin_users')
+        .select('user_id').eq('user_id', session.user.id).maybeSingle();
+      if (adminMembership && adminPanelShortcut) adminPanelShortcut.style.display = 'inline-flex';
+
       // UI Element Bindings
       const navUserName = document.getElementById('navUserName');
       const profileCardName = document.getElementById('profileCardName');
@@ -323,8 +330,6 @@
         if (fullNameInput) fullNameInput.value = fullName;
         if (phoneInput) phoneInput.value = phone;
 
-    const legacyQuotes = localStorage.getItem('cosmatech_quotes_' + email.toLowerCase());
-    renderQuotes(legacyQuotes ? JSON.parse(legacyQuotes) : []);
       }
 
   async function loadCustomerProfile(user) {
@@ -359,7 +364,7 @@
 
         // Generate quotes markup (newest first)
         quotesContainer.innerHTML = quotes.map((q) => {
-          const dateStr = new Date(q.date).toLocaleString('en-GB', {
+          const dateStr = new Date(q.created_at).toLocaleString('en-GB', {
             day: '2-digit',
             month: 'short',
             year: 'numeric',
@@ -367,19 +372,23 @@
             minute: '2-digit'
           });
 
-          const detailsHTML = q.details && q.details.length > 0
-            ? q.details.map(item => `• ${item}`).join('<br>')
+          const details = [
+            ...(Array.isArray(q.details) ? q.details : []),
+            ...(q.description ? [q.description] : [])
+          ];
+          const detailsHTML = details.length > 0
+            ? details.map(item => `• ${escapeHtml(item)}`).join('<br>')
             : 'No options selected';
 
           return `
             <div class="quote-card animate-on-scroll show">
               <div class="quote-header">
                 <div>
-                  <span class="quote-type">${q.type}</span>
+                  <span class="quote-type">${escapeHtml(q.service_type)}</span>
                   <div class="quote-date" style="margin-top: 4px;">Submitted: ${dateStr}</div>
                 </div>
                 <span class="quote-status-badge status-pending">
-                  <i class="far fa-clock"></i> Pending
+                  <i class="far fa-clock"></i> ${escapeHtml(q.status)}
                 </span>
               </div>
               <div class="quote-details-list">
@@ -387,7 +396,7 @@
               </div>
               <div class="quote-footer">
                 <span style="font-size: 0.85rem; color: var(--text-muted);">Estimates are subject to full inspection</span>
-                <span class="quote-price-tag">${q.price}</span>
+                <span class="quote-price-tag">${escapeHtml(q.estimated_price)}</span>
               </div>
             </div>
           `;
@@ -484,14 +493,34 @@
         });
       }
 
-  // Load the durable customer profile from Supabase.
-  try {
-    const profile = await loadCustomerProfile(session.user);
-    populateUserData(session.user, profile);
-  } catch (err) {
-    showError('Could not load your customer profile. Please run supabase/schema.sql in your Supabase project, then reload this page.');
-    populateUserData(session.user);
-  }
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[character]);
+      }
+
+      async function loadCustomerQuotes(user) {
+        const { data, error } = await supabaseClient.from('quote_requests')
+          .select('service_type, estimated_price, details, status, created_at')
+          .eq('user_id', user.id).order('created_at', { ascending: false });
+        if (error) throw error;
+        return data || [];
+      }
+
+      // Load the customer profile and server-backed quote history.
+      let profile = null;
+      try {
+        profile = await loadCustomerProfile(session.user);
+      } catch (err) {
+        showError('Could not load your customer profile. Please run supabase/schema.sql in your Supabase project, then reload this page.');
+      }
+      populateUserData(session.user, profile);
+      try {
+        renderQuotes(await loadCustomerQuotes(session.user));
+      } catch (err) {
+        showError('Could not load quote requests. Please apply the quote request setup in supabase/schema.sql, then reload this page.');
+        renderQuotes([]);
+      }
 
       // Interactive radial mouse glow inside glass-cards
       document.querySelectorAll('.glass-card').forEach(card => {

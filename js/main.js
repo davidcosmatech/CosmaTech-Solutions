@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (btnNext) {
-      btnNext.addEventListener('click', () => {
+      btnNext.addEventListener('click', async () => {
         if (!validateStep(currentStep)) return;
 
         if (currentStep < stepsCount - 1) {
@@ -180,7 +180,18 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           updateStep();
         } else {
-          submitWizard(modal);
+          btnNext.disabled = true;
+          btnNext.classList.add('btn-loading');
+          try {
+            await submitWizard(modal);
+          } catch (error) {
+            alert(isRo
+              ? 'Solicitarea nu a putut fi salvată. Verifică conexiunea și încearcă din nou.'
+              : 'Your request could not be saved. Check your connection and try again.');
+          } finally {
+            btnNext.disabled = false;
+            btnNext.classList.remove('btn-loading');
+          }
         }
       });
     }
@@ -453,13 +464,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  function submitWizard(modal) {
+  async function submitWizard(modal) {
     const nameInput = modal.querySelector('.quote-name');
     const emailInput = modal.querySelector('.quote-email');
+    const phoneInput = modal.querySelector('.quote-phone');
     const name = nameInput ? nameInput.value : 'Client';
     const email = emailInput ? emailInput.value : 'email';
+    const phone = phoneInput ? phoneInput.value : '';
     
-    // Save to database if LocalDatabase is available and user is logged in
     let serviceType = 'Quote Estimate';
     let totalPrice = 'TBD';
     let detailsList = [];
@@ -477,22 +489,37 @@ document.addEventListener('DOMContentLoaded', () => {
       items.forEach(el => detailsList.push(el.textContent));
     }
 
-    if (window.LocalDatabase && window.LocalDatabase.getCurrentUser()) {
-      window.LocalDatabase.saveQuote({
-        type: serviceType,
-        price: totalPrice,
-        details: detailsList,
-        date: new Date().toISOString()
-      });
+    const notesInput = modal.querySelector('.quote-notes');
+    if (!window.LocalDatabase?.saveQuote) {
+      throw new Error('Quote storage is unavailable.');
     }
+    await window.LocalDatabase.saveQuote({
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      type: serviceType,
+      price: totalPrice,
+      details: detailsList,
+      notes: notesInput ? notesInput.value.trim() : '',
+      date: new Date().toISOString()
+    });
+
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
 
     closeAllModals();
     
     showSuccessNotification(
       isRo ? 'Solicitare trimisă!' : 'Request Sent!',
-      isRo ? `Mulțumim, <strong>${name}</strong>. Detaliile proiectului tău au fost transmise inginerilor noștri.<br>Un rezumat estimativ complet a fost trimis pe adresa <strong>${email}</strong>.<br>Te vom contacta personal în curând!`
-           : `Thank you, <strong>${name}</strong>. Your project details have been successfully sent to our engineers.<br>A complete estimated summary has been sent to <strong>${email}</strong>.<br>We will contact you personally very soon!`
+      isRo ? `Mulțumim, <strong>${safeName}</strong>. Solicitarea ta a fost înregistrată cu succes.<br>Te vom contacta la <strong>${safeEmail}</strong> în curând.`
+           : `Thank you, <strong>${safeName}</strong>. Your request has been saved successfully.<br>We will contact you at <strong>${safeEmail}</strong> soon.`
     );
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
   }
 
   // ==========================================
